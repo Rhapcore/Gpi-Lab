@@ -18,7 +18,7 @@ const style = {
     p: 4,
 }
 
-const EditarTablaEmbarque = ({user ,open, setOpen }) => {
+const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
 
     const handleClose = () => setOpen(false);
     const [body, setBody] = useState({});
@@ -121,7 +121,7 @@ const EditarTablaEmbarque = ({user ,open, setOpen }) => {
     );
 }
 
-export default EditarTablaEmbarque;
+export default EditarTablaEmbarque2da;
 
 
                                     

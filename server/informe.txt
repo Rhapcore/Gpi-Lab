@@ -1,0 +1,44 @@
+                   LIPIGAS
+                   Planta Concon
+                             INFORME DE EMBARQUE
+                             ==================
+Fecha: 22/11/22   Hora : 13:35:33                     Computer ID :    34140
+--------------------------------------------------------------------------------
+Medidor Numero           FT-01
+Embarque Numero            121
+Nombre entrega                                
+Numero de entrega            2
+Nombre Producto        PROPANO
+Tabla API             GPATP16M
+--------------------------------------------------------------------------------
+Fecha Incio entrega   21/11/22
+Hora Inicio entrega   11:04:16
+
+Fecha Termino entrega 22/11/22
+Hora termino entrega  13:35:33         
+--------------------------------------------------------------------------------
+V. bruto entrega m3           .0
+V. Neto entrega m3            .0
+Masa entrega ton              .0       
+
+Acumulado Bruto m3         767.9
+Acumulado Neto m3          728.3
+Masa Acumulada ton         357.1
+--------------------------------------------------------------------------------
+Promedios de entrega  :
+Temperatura Deg.C          .00
+Presion kg/cm2            .0
+Densidad s/c kg/m3          .0         
+Temp densidad Deg.C        .00
+Presion densidad kPa        .0
+Dens @ Ref Deg.C            .0
+VCF                      .0000
+CPL                      .0000
+Factor medidor           .0000
+Factor  K                 .000
+MF Used in Net Calc        YES
+--------------------------------------------------------------------------------
+
+Observaciones: ---------------
+------------------------------     --------------------
+------------------------------     SUPERVISOR DE CONTROL

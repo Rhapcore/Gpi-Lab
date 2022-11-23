@@ -49,6 +49,7 @@ const Dashboard = () => {
                         <Grid item lg={4} md={6} sm={6} xs={12} sx={{ mt: 1 }}>
                         <Paper elevation={10}>
                             <MainCard>
+                                
                                     <Typography variant="h5"sx={{ mb: 0 }} > Producto y Embarques </Typography>
                                     <TablaClienprod/>
                             </MainCard>
@@ -135,7 +136,6 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
             </Grid>
-                
         </div>
     )
 }
