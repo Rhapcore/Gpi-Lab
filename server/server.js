@@ -126,8 +126,8 @@ app.get("/MostrarCliente", (req,res) => {
 })
 
 app.post('/EditarCliente', (req, res) => {
-	const { Id, FechaDeTermino, Entrega, Producto, Masa, VolumenTon,Embarque } = req.body
-	db.all(`UPDATE TablaCliente SET FechaDeTermino = '${FechaDeTermino}',Entrega = '${Empresa}', Producto = '${Producto}', Masa = '${Masa}', VolumenTon = '${VolumenTon}', Embarque = '${Embarque}' WHERE Id = '${Id}'`,  (err, result) => {
+	const { Id, FechaDeTermino, Empresa, Producto, Masa, VolumenTon,Embarque } = req.body
+	db.all(`UPDATE TablaCliente SET FechaDeTermino = '${FechaDeTermino}',Empresa = '${Empresa}', Producto = '${Producto}', Masa = '${Masa}', VolumenTon = '${VolumenTon}', Embarque = '${Embarque}' WHERE Id = '${Id}'`,  (err, result) => {
 		if (err) {
 			res.status(500).send(err)
 		} else {

@@ -77,8 +77,8 @@ const EditarTablaEmbarque = ({user ,open, setOpen }) => {
                                 <div>
                                         <TextField 
                                         sx={{ m: 1 }}
-                                        label='Entrega' 
-                                        name='Entrega'
+                                        label='Empresa' 
+                                        name='Empresa'
                                         value={body.Empresa}
                                         defaultValue={user.Empresa}
                                         onChange={onChange}

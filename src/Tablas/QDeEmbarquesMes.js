@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 // @mui
 import { Box, Card, CardHeader } from '@mui/material';
-import { Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { Grid, MenuItem, TextField } from '@mui/material';
 import { lime } from '@mui/material/colors';
 // utils
 // import { fNumber } from '../../../utils/formatNumber';
@@ -16,7 +16,6 @@ import { lime } from '@mui/material/colors';
 QDeEmbarquesmes.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
-  chartData: PropTypes.array.isRequired,
 };
 
 const status = [

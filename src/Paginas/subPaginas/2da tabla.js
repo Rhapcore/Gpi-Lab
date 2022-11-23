@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import MUIDataTable from "mui-datatables";
 import axios from "axios";
 import { Grid } from "@mui/material";
 import Tablacliente2da from "../../Tablas/TablaCliente2da";
@@ -69,11 +68,7 @@ const Item = styled(Paper)(({ theme }) => ({
             <Grid item xs={12}>
                     <Grid container>
                         <Grid item lg={12} md={6} sm={6} xs={12} sx={{ mt: 5 }}>
-            <MUIDataTable 
-            title={"Panel de busqueda"}
-            data={products}
-            columns={columns}
-            />
+            {/* <MUIDataTable title={"Panel de busqueda"}data={products}columns={columns}/> */}
             </Grid>
             </Grid>
             </Grid>

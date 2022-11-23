@@ -95,7 +95,7 @@ const Tablacliente2da = (data2) => {
 
     <TableContainer component={Paper} elevation={2}>
         <Alertas message={mensaje} />
-        <Table item sx={"auto"} aria-label="customized table">
+        <Table aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>F de termino</StyledTableCell>

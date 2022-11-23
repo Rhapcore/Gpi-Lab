@@ -34,7 +34,7 @@ const StyledChartWrapper = styled('div')(({ theme }) => ({
 Grafico.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
-  chartColors: PropTypes.arrayOf,
+  chartColors: PropTypes.array,
   chartData: PropTypes.array,
 };
 

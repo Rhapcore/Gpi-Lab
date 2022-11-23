@@ -91,15 +91,14 @@ const SideNav = () => {
       <Stack direction="row" spacing={2}>
       <i>ㅤㅤㅤㅤㅤ</i>
               <Avatar
-                anchorOrigin={{ vertical: 'top',horizontal: 'center'}}
-                AccountCircleIcon
+                anchororigin={{ vertical: 'top',horizontal: 'center'}}
                 sx={{ width: 80, height: 80, bgcolor: lime[500]  }}
               ><AccountCircleIcon sx={{ width: 80, height: 80}}/></Avatar>
               <i>ㅤ</i>
               </Stack>
               </ListItemButton>
-              <tr>ㅤㅤㅤㅤㅤUsuario Admin ㅤㅤㅤㅤ</tr>
-              <tr>ㅤㅤㅤNombre Maria de la luzㅤㅤㅤ</tr>
+              <div>ㅤㅤㅤㅤㅤUsuario Admin ㅤㅤㅤㅤ</div>
+              <div>ㅤㅤㅤNombre Maria de la luzㅤㅤㅤ</div>
     <Divider />
     <ListItemButton href="/Dashboard" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
       <ListItemIcon>

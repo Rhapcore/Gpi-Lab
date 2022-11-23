@@ -11,12 +11,12 @@ const DashboardFront = () => {
            <Grid>
               <Typography variant="h5">  </Typography>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 30, sm: 20, md: 5 }}>
-                <Grid xs={0.2}> </Grid>
-                        <SideNav/>
-                <Grid item xs={9.5} >
-                <Dashboard/>
-            </Grid>
-            </Grid>
+                    <Grid item xs={0.2} />
+                    <SideNav/>
+                    <Grid item xs={9.5} >
+                    <Dashboard/>
+                    </Grid>
+                </Grid>
             </Grid>
         </div>
     )

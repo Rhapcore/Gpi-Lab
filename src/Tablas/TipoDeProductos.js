@@ -12,41 +12,35 @@ import { grey, lime, red } from '@mui/material/colors';
 
 const TipoDeproductos = () => {
 
-
     const theme = useTheme();
-
     const [userList, setUserList] = useState([])
     const [result, setResult] = useState([])
-
-    const getUsers = async () => {
-        const {data} = await axios.get("http://localhost:3001/MostrarCliente")
-        setUserList(data)
-        const objList = {};
-        userList.forEach((Producto) => {
-            if (!objList[Producto.Producto]) objList[Producto.Producto] = { ... Producto, cantidad: -1};
-        objList[Producto.Producto].cantidad += -1 ;
-            objList[Producto.Producto].Embarque += Producto.Embarque;
-            objList[Producto.Producto].VolumenTon += Producto.VolumenTon ;
-            objList[Producto.Producto].Masa += Producto.Masa;
-        });
-        const result = Object.keys(objList).map((key) => objList[key]);
-        setResult(result)
-        }
-
+    const [series,setSeries] = useState([]);
     const { primary, secondary } = theme.palette.text;
     const line = theme.palette.black;
-
     const warning = lime[300];
     const primaryMain = grey[700];
     const successDark = red[1000];
 
-    const [series,setSeries] = useState([{}]);
+    useEffect( () => { 
+        const getUsers = async () => {
+            const {data} = await axios.get("http://localhost:3001/MostrarCliente");
+            setUserList(data);
+            const objList = {};
+            data.forEach((Producto) => {
+                if (!objList[Producto.Producto]) objList[Producto.Producto] = { ... Producto, cantidad: 0};
+                objList[Producto.Producto].cantidad += 0 ;
+                objList[Producto.Producto].Embarque += Producto.Embarque;
+                objList[Producto.Producto].VolumenTon += Producto.VolumenTon;
+                objList[Producto.Producto].Masa += Producto.Masa;
+            });
+            const result = Object.keys(objList).map((key) => objList[key]);
+            setResult(result);
+            }
+            getUsers();
+        }, []);
 
-    const pro = result.map((i) => i.Producto);
-    // console.log((pro[0]),(pro[1]),(pro[2]))
     
-
-    useEffect( () => { getUsers() }, [getUsers]);
 
     
     useEffect( () => { 
@@ -70,11 +64,10 @@ const TipoDeproductos = () => {
                 name: 'Suma de VOLUM ACUM',
                 data: rem3,
                 }]) }, 
-        [userList,setSeries,]);
+        [userList]);
 
         
 const columnChartOptions = {
-    
     chart: {
         type: 'bar',
         height: 430,
@@ -97,7 +90,6 @@ const columnChartOptions = {
         colors: ['transparent']
     },
     xaxis: {
-        categories: ["(pro[0])","(pro[1])","pro[2]"]
     },
     yaxis: {
         title: {
@@ -159,7 +151,8 @@ const columnChartOptions = {
                     style: {
                         colors: [secondary, secondary, secondary, secondary, secondary, secondary]
                     }
-                }
+                },
+                categories: [...result.map(i => i.Producto)],
             },
             yaxis: {
                 labels: {
@@ -182,7 +175,7 @@ const columnChartOptions = {
                 }
             }
         }));
-    }, [primary, secondary, line, warning, primaryMain, successDark]);
+    }, [primary, secondary, line, warning, primaryMain, successDark, result]);
 
     return (
         <div id="chart">

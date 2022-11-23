@@ -39,21 +39,6 @@ const TablaClienprod = () => {
   const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
   const [selectedUser, setSelectedUser] = useState([]);
 
-  const getUsers = async () => {
-    const {data} = await axios.get("http://localhost:3001/MostrarCliente")
-    setUserList(data)
-    const objList = {};
-    userList.forEach((Producto) => {
-		if (!objList[Producto.Producto]) objList[Producto.Producto] = { ... Producto, cantidad: 0};
-    objList[Producto.Producto].cantidad += 0 ;
-		objList[Producto.Producto].Embarque += Producto.Embarque;
-		objList[Producto.Producto].VolumenTon += Producto.VolumenTon ;
-		objList[Producto.Producto].Masa += Producto.Masa;
-    });
-    const result = Object.keys(objList).map((key) => objList[key]);
-    setResult(result)
-    }
-
   const Embar = userList.map((i) => i.Embarque);
   const ton = userList.map((i) => i.VolumenTon);
   const m3 = userList.map((i) => i.Masa); 
@@ -71,13 +56,35 @@ const TablaClienprod = () => {
  
   const [openEdit, setOpenEdit] = useState(false);
 
-  useEffect( () => { getUsers()}, [getUsers]);
+  useEffect( () => { 
+    const getUsers = async () => {
+      const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+      setUserList(data)
+      const objList = {};
+      data.forEach((Producto) => {
+      if (!objList[Producto.Producto]) objList[Producto.Producto] = { 
+        ... Producto,
+        Embarque: 0,
+        VolumenTon: 0,
+        Masa: 0,
+        cantidad: 0,
+      };
+      objList[Producto.Producto].cantidad += 0 ;
+      objList[Producto.Producto].Embarque += Producto.Embarque;
+      objList[Producto.Producto].VolumenTon += Producto.VolumenTon ;
+      objList[Producto.Producto].Masa += Producto.Masa;
+      });
+      const result = Object.keys(objList).map((key) => objList[key]);
+      setResult(result)
+    }
+    getUsers();
+  }, []);
 
     return(
 
     <TableContainer component={Paper} elevation={2}>
         <Alertas message={mensaje} />
-        <Table item sx={"auto"} aria-label="customized table">
+        <Table aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Producto</StyledTableCell>

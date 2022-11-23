@@ -51,7 +51,7 @@ const TablaProducemb = () => {
 
     <TableContainer component={Paper} elevation={2}>
         <Alertas message={mensaje} />
-        <Table item sx={"auto"} aria-label="customized table">
+        <Table aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Cliente</StyledTableCell>
@@ -64,7 +64,7 @@ const TablaProducemb = () => {
           {userList.map((user, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
-                  {user.Entrega}
+                  {user.Empresa}
                 </StyledTableCell>
                 <StyledTableCell>{user.Producto}</StyledTableCell>
                 <StyledTableCell>{user.Masa}</StyledTableCell>

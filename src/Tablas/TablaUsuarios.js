@@ -80,7 +80,7 @@ const Tablausuarios = () => {
 
     <TableContainer component={Paper} elevation={2}>
         <Alertas message={mensaje} />
-        <Table item sx={"auto"} aria-label="customized table">
+        <Table aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>ID</StyledTableCell>
