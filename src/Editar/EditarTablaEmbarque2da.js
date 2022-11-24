@@ -18,7 +18,7 @@ const style = {
     p: 4,
 }
 
-const EditarTablaEmbarque = ({user ,open, setOpen }) => {
+const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
 
     const handleClose = () => setOpen(false);
     const [body, setBody] = useState({});
@@ -77,8 +77,8 @@ const EditarTablaEmbarque = ({user ,open, setOpen }) => {
                                 <div>
                                         <TextField 
                                         sx={{ m: 1 }}
-                                        label='Empresa' 
-                                        name='Empresa'
+                                        label='Entrega' 
+                                        name='Entrega'
                                         value={body.Empresa}
                                         defaultValue={user.Empresa}
                                         onChange={onChange}
@@ -121,7 +121,7 @@ const EditarTablaEmbarque = ({user ,open, setOpen }) => {
     );
 }
 
-export default EditarTablaEmbarque;
+export default EditarTablaEmbarque2da;
 
 
                                     
