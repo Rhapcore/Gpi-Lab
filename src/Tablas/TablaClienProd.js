@@ -107,13 +107,13 @@ const TablaClienprod = () => {
           </TableBody>
         </Table>
         <Table></Table>
-        <Table>
+        <Table aria-label="customized table">
         <TableHead>
         <TableRow>
-        <StyledTableCell>TOTAL GENERAL</StyledTableCell>
-        <StyledTableCell> {EMb} </StyledTableCell>
-        <StyledTableCell> {M3} </StyledTableCell>
-        <StyledTableCell> {total} </StyledTableCell>
+        <StyledTableCell >TOTAL GENERAL</StyledTableCell>
+        <StyledTableCell aria-label="customized table"> {EMb} </StyledTableCell>
+        <StyledTableCell aria-label="customized table"> {M3} </StyledTableCell>
+        <StyledTableCell aria-label="customized table"> {total} </StyledTableCell>
         </TableRow>
         </TableHead>
         </Table>

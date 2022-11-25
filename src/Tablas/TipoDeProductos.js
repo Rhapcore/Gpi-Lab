@@ -40,9 +40,6 @@ const TipoDeproductos = () => {
             getUsers();
         }, []);
 
-    
-
-    
     useEffect( () => { 
 
         const m3 = result.map((i) => i.Masa);

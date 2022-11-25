@@ -1,17 +1,11 @@
 import PropTypes from 'prop-types';
-
-// material-ui
 import { Box, Chip, Grid, Stack, Typography } from '@mui/material';
 import MainCard from '../Tablas/MainCard';
-
-// project import
-
-// assets
 
 // ==============================|| STATISTICS - ECOMMERCE CARD  ||============================== //
 
 const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra, cliente }) => (
-    <MainCard contentSX={{ p: 2.25 }}>
+    <MainCard contentSX={{ p: 2 }}>
         <Stack spacing={0.5}>
             <Typography variant="h6" color="textSecondary">
                 {title}
@@ -35,7 +29,7 @@ const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra, cli
                 )}
             </Grid>
         </Stack>
-        <Box sx={{ pt: 2.25 }}>
+        <Box sx={{ pt: 2}}>
             <Typography color="textSecondary"  variant="h5" >
                 <Typography variant="h5" component="span"  sx={{ color: `${color || 'primary'}.main` }}>
                 {cliente} 

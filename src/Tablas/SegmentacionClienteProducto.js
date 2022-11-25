@@ -24,13 +24,78 @@ fs.createReadStream("db_transferviwe.csv")
  });
 */
 // chart options
+
+
+// ==============================|| SALES COLUMN CHART ||============================== //
+
+const SegmentacionClienteproducto = () => {
+    const theme = useTheme();
+
+    const [userList, setUserList] = useState([])
+    const [result, setResult] = useState([])
+    const [series,setSeries] = useState([{}]);
+    const { primary, secondary } = theme.palette.text;
+    const line = theme.palette.divider;
+    const warning = lime[300];
+    const primaryMain = grey[700];
+    const successDark = red[1000];
+
+    useEffect( () => { 
+        const getUsers = async () => {
+          const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+          setUserList(data)
+          const objList = {};
+          data.forEach((Empresa) => {
+          if (!objList[Empresa.Empresa]) objList[Empresa.Empresa] = { 
+            ... Empresa,
+            VolumenTon: 0,
+            Masa: 0,
+            cantidad: 0,
+          };
+          objList[Empresa.Empresa].cantidad += 0 ;
+          objList[Empresa.Empresa].VolumenTon += Empresa.VolumenTon ;
+          objList[Empresa.Empresa].Masa += Empresa.Masa;
+          });
+          const result = Object.keys(objList).map((key) => objList[key]);
+          setResult(result)
+        }
+        getUsers(result);
+      }, []);
+
+
+
+        useEffect( () => { 
+
+            const m3 = result.map((i) => i.Masa);
+            const rem3 = result.map((i) => i.Masa);
+            const reton = result.map((i) => i.VolumenTon);
+    
+            let totalreton = reton.reduce(
+                (acc, r) => Number.parseInt(r) + acc, -reton[0]);
+                totalreton += Number.parseInt(reton);
+            let M3 = m3.reduce(
+                (acc, r) => Number.parseInt(r) + acc, -reton[0]);
+                M3 += Number.parseInt(m3);
+    
+            setSeries([
+                    {
+                    name: 'Suma de TON ACUM',
+                    data: reton,
+                    },{
+                    name: 'Suma de VOLUM ACUM',
+                    data: rem3,
+                    }]) }, 
+            [userList]);
+    
+
 const columnChartOptions = {
     chart: {
         type: 'bar',
         height: 430,
         toolbar: {
             show: false
-        }
+        },
+        categories: [...result.map(i => i.Empresa)]
     },
     plotOptions: {
         bar: {
@@ -45,9 +110,6 @@ const columnChartOptions = {
         show: true,
         width: 8,
         colors: ['transparent']
-    },
-    xaxis: {
-        categories: ['Cliente 1', 'Cliente 2', 'Cliente 2', 'Cliente 3', 'Cliente 4', 'Cliente 5']
     },
     yaxis: {
         title: {
@@ -96,44 +158,8 @@ const columnChartOptions = {
     ]
 };
 
-// ==============================|| SALES COLUMN CHART ||============================== //
-
-const SegmentacionClienteproducto = () => {
-    const theme = useTheme();
-
-    const [userList, setUserList] = useState([])
-
-    const getUsers = async () => {
-      const {data} = await axios.get("http://localhost:3001/MostrarCliente")
-      setUserList(data)
-    }
-
-
-    const { primary, secondary } = theme.palette.text;
-    const line = theme.palette.divider;
-
-    const warning = lime[300];
-    const primaryMain = grey[700];
-    const successDark = red[1000];
-
-    const [series,setSeries] = useState([{}]);
-
-    useEffect( () => { getUsers() }, []);
-
-    useEffect( () => { 
-        const ton = userList.map((i) => i.VolumenTon);
-        const masa = userList.map((i) => i.Masa);
-        setSeries([{
-                name: 'Suma de MASA (TON)',
-                data: ton,
-                },{
-                name: 'Suma de VOLUM (M3)',
-                data: masa,
-                }]) }, 
-        [userList,setSeries,]);
 
     const [options, setOptions] = useState(columnChartOptions);
-
 
     useEffect(() => {
         setOptions((prevState) => ({
@@ -144,7 +170,8 @@ const SegmentacionClienteproducto = () => {
                     style: {
                         colors: [secondary, secondary, secondary, secondary, secondary, secondary]
                     }
-                }
+                },
+                categories: [...result.map(i => i.Empresa)],
             },
             yaxis: {
                 labels: {
@@ -167,7 +194,7 @@ const SegmentacionClienteproducto = () => {
                 }
             }
         }));
-    }, [primary, secondary, line, warning, primaryMain, successDark]);
+    }, [primary, secondary, line, warning, primaryMain, successDark, result]);
 
     return (
         <div id="chart">

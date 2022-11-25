@@ -3,6 +3,7 @@ const app = express()
 const cors = require("cors")
 const sqlite3 = require("sqlite3").verbose();
 const jwt = require("../src/services/jwt");
+const { SECRET } = require('./consts');
 
 app.use(cors())
 
@@ -25,18 +26,19 @@ app.get("/", (req,res) => {
 })
 
 app.post('/Login', (req, res) => {
-	const { Rut, password } = req.body
+	const { Rut, password } = req.body;
 	const values = [Rut, password]
 	db.all("SELECT * FROM credentials WHERE Rut = ? AND password = ?", values, (err, result) => {
 		if (err) {
 			res.status(500).send("Error en la peticion")
 		} else {
 			if (result.length > 0) {
+				const user = result[0];
 				res.status(200).send({
-					"id": result[0].id,
-					"user": result[0].user,
-					"Rut": result[0].Rut,
-					token: jwt.createToken(result)
+					"Rut": user.Rut,
+					"Cargo": user.Cargo,
+					"Nombre": `${user.FristName} ${user.LastName}`,
+					token: jwt.createToken(result, SECRET),
 				})
 			} else {
 				res.status(400).send('El usuario no ha podido loguearse')
@@ -71,7 +73,7 @@ app.post("/Eliminar", (req,res) => {
 })
 
 app.post('/Guardar', (req, res) => {
-	const {FristName, LastName, Rut, Cargo, username, password } = req.body;
+	const {FristName, LastName, Rut, Cargo, password } = req.body;
 	db.all(`INSERT INTO credentials (FristName, LastName, Rut, Cargo, password) VALUES ('${FristName}', '${LastName}', '${Rut}', '${Cargo}', '${password}')`,(err, result) => {
 	  if (err) {
 		res.status(500).send("Error al guardar el usuario");

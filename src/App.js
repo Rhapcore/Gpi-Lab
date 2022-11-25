@@ -9,25 +9,35 @@ import RegisterFront from "./Paginas/RegisterFront";
 import UsuarioFront from "./Paginas/UsuariosFront";
 import SettingsFront from "./Paginas/SettingsFront";
 import DashboardSegunda from "./Paginas/DashboardSegunda";
+import GuardedOperador from "./middleware/guardedOperador";
+import GuardedAdmin from "./middleware/guardedAdmin";
+import GuardedCliente from "./middleware/guardedCliente";
+
 
 function App() {
   return (
-    <div className='App ' >
-    <BrowserRouter>
+    <div className='App '>
+      <BrowserRouter>
       <Routes>
           <Route path='/' element={<Login /> } />
-          <Route path='/Dashboard' element={<DashboardFront /> } />
-          <Route path='/Dashboard2da' element={<DashboardSegunda /> } />
+          <Route path='/Dashboard' element={
+                <GuardedAdmin><DashboardFront /></GuardedAdmin> } />
+          <Route path='/Dashboard2da' element={
+           <GuardedCliente><DashboardSegunda /></GuardedCliente> } />
           <Route path='/tablacliente' element={<Tablacliente /> } />
-          <Route path='/Opciones' element={<SettingsFront /> } />
-          <Route path='/Usuarios' element={<UsuarioFront /> } />
-          <Route path='/Usuarios/Agregar' element={<RegisterFront /> } />
+          <Route path='/Opciones' element={
+              <GuardedOperador><SettingsFront /></GuardedOperador>
+           } />
+          <Route path='/Usuarios' element={
+             <GuardedAdmin><UsuarioFront /></GuardedAdmin> } />
+          <Route path='/Usuarios/Agregar' element={
+          <GuardedAdmin><RegisterFront /></GuardedAdmin>
+           } />
           <Route path='/PageError' element={<Page404 /> } />
         <Route path='*' element={<Navigate replace to="/PageError"/> }/>
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
     </div>
-
   );
 }
 

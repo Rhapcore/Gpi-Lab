@@ -1,8 +1,6 @@
-import { List, ListItemIcon,ListItemText  , ListItemButton, ListSubheader, Paper, Menu} from '@mui/material';
+import { Box, Typography, List, ListItemIcon,ListItemText, Grid, ListItemButton, ListSubheader, Paper, Menu} from '@mui/material';
 import * as React from 'react';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
-import { Box } from '@mui/system';
-
 
 
 // icons import 
@@ -39,6 +37,7 @@ const FireNav = styled(List)({
 const SideNav = () => {
   
  // const [open, setOpen] = React.useState(true);
+ const user = JSON.parse(localStorage.getItem('user'));
 
 
   return (
@@ -88,17 +87,25 @@ const SideNav = () => {
   >
     
     <ListItemButton>
-      <Stack direction="row" spacing={2}>
-      <i>ㅤㅤㅤㅤㅤ</i>
-              <Avatar
-                anchororigin={{ vertical: 'top',horizontal: 'center'}}
+          <Grid
+        container
+        spacing={2}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '15vh', paddingLeft: 60 }}
+      >
+        <Grid item xs={12}>
+        <Avatar
+                anchororigin={{ vertical: 'top'}}
                 sx={{ width: 80, height: 80, bgcolor: lime[500]  }}
               ><AccountCircleIcon sx={{ width: 80, height: 80}}/></Avatar>
-              <i>ㅤ</i>
-              </Stack>
-              </ListItemButton>
-              <div>ㅤㅤㅤㅤㅤUsuario Admin ㅤㅤㅤㅤ</div>
-              <div>ㅤㅤㅤNombre Maria de la luzㅤㅤㅤ</div>
+                <Typography variant="h6">{user.Cargo}</Typography>
+                <Typography variant="h6">{user.Nombre}</Typography>
+        </Grid>   
+        
+      </Grid>
+    </ListItemButton>
     <Divider />
     <ListItemButton href="/Dashboard" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
       <ListItemIcon>
@@ -128,7 +135,10 @@ const SideNav = () => {
       <ListItemText primary="Opciones" />
     </ListItemButton>
 
-    <ListItemButton href="/" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
+    <ListItemButton onClick={() => {
+          localStorage.removeItem('user');
+      }}
+     href="/" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
       <ListItemIcon>
           <PersonOffIcon />
       </ListItemIcon>

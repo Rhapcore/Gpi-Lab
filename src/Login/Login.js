@@ -42,7 +42,7 @@ const Login = () => {
                     message: "Contraseña Correcta",
                     type: 'success'
                 })
-                localStorage.setItem('auth', '"yes"')
+                localStorage.setItem('user', JSON.stringify(data))
                 setIsLoading(false)
                 window.location.href="/Dashboard"
             })

@@ -1,4 +1,4 @@
-import React, { useRef, useState, Component } from "react";
+import React, { useRef, Component } from "react";
 import ReactToPrint from 'react-to-print';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
@@ -7,8 +7,8 @@ import LogoGpi from '../Imagenes/Logo-GPI.png';
 import "../Imagenes/Header.css";
 
 const DocuPDF = () => {
-    const componentRef = useRef();
 
+    const componentRef = useRef();
     class App extends Component{
         constructor (props) {
             super (props);
@@ -17,7 +17,6 @@ const DocuPDF = () => {
                 fileContent: ""
             };
         }
- 
 
     handleFileChange = e => {
         const file = e.target.files[0];
@@ -31,7 +30,6 @@ const DocuPDF = () => {
         }
     }
 }
-
 
     return (
         <>
@@ -47,9 +45,9 @@ const DocuPDF = () => {
                         <thead>
                             <tr className="column2">
                                 <tr>ㅤㅤㅤ</tr>
-                                <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
+                                <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
                                 <img src={ LogoGpi } className="imagenLogo300"/>
-                                <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
+                                <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
                                 <tr>ㅤㅤㅤ</tr>
                                 <tr></tr>
                             </tr>

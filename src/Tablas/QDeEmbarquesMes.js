@@ -33,22 +33,56 @@ const status = [
   }
 ];
 
-export default function QDeEmbarquesmes({ title, subheader, ...other }) {
+function QDeEmbarquesmes({ title, subheader, ...other }) {
 
   const [value, setValue] = useState('Dia');
+  const [series,setSeries] = useState([]);
+
   const [userList, setUserList] = useState([])
+  const [result, setResult] = useState([])
+  const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
+  const [selectedUser, setSelectedUser] = useState([]);
 
-  const getUsers = async () => {
-    const {data} = await axios.get("http://localhost:3001/MostrarCliente")
-    setUserList(data)
-  }
+  const Embar = userList.map((i) => i.Embarque);
+  const ton = userList.map((i) => i.VolumenTon);
+  const m3 = userList.map((i) => i.Masa); 
+
+    let EMb = Embar.reduce(
+    (acc, r) => Number.parseInt(r) + acc, -Embar[0]);
+    EMb += Number.parseInt(Embar);  
+    let total = ton.reduce(
+      (acc, r) => Number.parseInt(r) + acc, -ton[0]);
+      total += Number.parseInt(ton);
+    let M3 = m3.reduce(
+      (acc, r) => Number.parseInt(r) + acc, -m3[0]);
+      M3 += Number.parseInt(m3);
+
+ 
+  const [openEdit, setOpenEdit] = useState(false);
+
+  useEffect( () => { 
+    const getUsers = async () => {
+      const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+      setUserList(data)
+      const objList = {};
+      data.forEach((Empresa) => {
+      if (!objList[Empresa.Empresa]) objList[Empresa.Empresa] = { 
+        ... Empresa,
+        Embarque: 0,
+        cantidad: 0,
+      };
+      objList[Empresa.Empresa].cantidad += 0 ;
+      objList[Empresa.Empresa].Embarque += Empresa.Embarque;
+      });
+      const result = Object.keys(objList).map((key) => objList[key]);
+      setResult(result)
+    }
+    getUsers();
+  }, []);
+
+  const chartSeries = result.map((i) => i.Embarque);
 
 
-  const chartLabels = userList.map((i) => i.Empresa);
-  const chartSeries = userList.map((i) => i.Embarque);
-
-
-  useEffect( () => { getUsers() }, [getUsers]);
   const chartOptions = ({
     tooltip: {
       colors: lime[500],
@@ -64,7 +98,7 @@ export default function QDeEmbarquesmes({ title, subheader, ...other }) {
       bar: { horizontal: true, barHeight: '40%', borderRadius: 5 },
     },
     xaxis: {
-      categories: chartLabels,
+      categories: [...result.map(i => i.Empresa)],
     },
   });
 
@@ -101,3 +135,5 @@ export default function QDeEmbarquesmes({ title, subheader, ...other }) {
     </Card>
   );
 }
+
+export default QDeEmbarquesmes;
