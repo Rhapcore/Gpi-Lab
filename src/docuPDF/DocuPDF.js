@@ -9,6 +9,7 @@ import "../Imagenes/Header.css";
 const DocuPDF = () => {
 
     const componentRef = useRef();
+
     class App extends Component{
         constructor (props) {
             super (props);
@@ -17,7 +18,6 @@ const DocuPDF = () => {
                 fileContent: ""
             };
         }
-
     handleFileChange = e => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -29,8 +29,8 @@ const DocuPDF = () => {
             console.log("No Coresponde", reader.error)
         }
     }
-}
-
+};
+    
     return (
         <>
             <ReactToPrint

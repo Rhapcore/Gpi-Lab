@@ -138,6 +138,27 @@ app.post('/EditarCliente', (req, res) => {
 	})
 })
 
+app.get("/MostrarAcuerdoComercial", (req,res) => {
+    db.all("SELECT * FROM AcuerdoComercial", (err, rows) => {
+        if (err) {
+            res.status(500).send(err)}
+            else {
+                res.status(200).send(rows)
+            }
+    })
+})
+
+app.post('/EditarAcuerdoComercial', (req, res) => {
+	const { Id,NombreEmpresa, Producto, MesAño, TMProgramaPorAcuerdos, TMRecepcionada, TMDiferencia,Recepcionado,Tolerancia,MinimoTolerancia,MaximaTolerancia } = req.body
+	db.all(`UPDATE AcuerdoComercial SET NombreEmpresa = '${NombreEmpresa}',Producto = '${Producto}', MesAño = '${MesAño}', TMProgramaPorAcuerdos = '${TMProgramaPorAcuerdos}', TMRecepcionada = '${TMRecepcionada}', TMDiferencia = '${TMDiferencia}', Recepcionado = '${Recepcionado}', Tolerancia = '${Tolerancia}', MinimoTolerancia = '${MinimoTolerancia}', MaximaTolerancia = '${MaximaTolerancia}' WHERE Id = '${Id}'`,  (err, result) => {
+		if (err) {
+			res.status(500).send(err)
+		} else {
+			res.status(200).send({ "status": "success", "message": "Acuerdo Comercial editado" })
+		}
+	})
+})
+
 
 app.listen(3001 , () => console.log("Listening at port 3001"))
 

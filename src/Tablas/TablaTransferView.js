@@ -16,6 +16,7 @@ import Fab from '@mui/material/Fab';
 import axios from 'axios';
 import Alertas from '../Alertas/Alertas';
 import { lime } from '@mui/material/colors';
+import { BASE_URL } from "../misc/consts";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,11 +41,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const TablaTransferView = () => {
 
   const [userList, setUserList] = useState([])
-  const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
+  const [mensaje] = useState({ ident: null, message: null, type: null })
   const [selectedUser, setSelectedUser] = useState([]);
 
   const getUsers = async () => {
-    const {data} = await axios.get("http://localhost:3001/TransferView")
+    const {data} = await axios.get(`${BASE_URL}/TransferView`)
     setUserList(data)
   }
 

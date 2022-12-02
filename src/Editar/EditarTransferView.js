@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import axios from "axios";
 import Alertas from "../Alertas/Alertas";
+import { BASE_URL } from "../misc/consts";
 
 const style = {
     position: 'absolute',
@@ -33,7 +34,7 @@ const TransferViewEditar = ({user ,open, setOpen }) => {
     }
 
     const getUsers = async () => {
-        const {data} = await axios.get("http://localhost:3001/TransferView")
+        const {data} = await axios.get(`${BASE_URL}/TransferView`)
       }
 
     useEffect(() => {
@@ -43,7 +44,7 @@ const TransferViewEditar = ({user ,open, setOpen }) => {
                     sentBody.Id = user.Id;
                     
 
-              const {data} = await axios.post("http://localhost:3001/TransferViewEditar", sentBody);
+              const {data} = await axios.post(`${BASE_URL}/TransferViewEditar`, sentBody);
             handleClose()
             getUsers()
             } catch (response) {

@@ -7,12 +7,12 @@ import MainCard from '../Tablas/MainCard';
 const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra, cliente }) => (
     <MainCard contentSX={{ p: 2 }}>
         <Stack spacing={0.5}>
-            <Typography variant="h6" color="textSecondary">
+            <Typography color="textSecondary">
                 {title}
             </Typography>
             <Grid container alignItems="center">
                 <Grid item>
-                    <Typography variant="h4" color="inherit">
+                    <Typography variant="h5" color="inherit">
                         {count}
                     </Typography>
                 </Grid>
@@ -22,16 +22,16 @@ const AnalyticEcommerce = ({ color, title, count, percentage, isLoss, extra, cli
                             variant="combined"
                             color={color}
                             label={`${percentage}%`}
-                            sx={{ ml: 1.25, pl: 1 }}
+                            sx={{ ml: 1, pl: 1 }}
                             size="small"
                         />
                     </Grid>
                 )}
             </Grid>
         </Stack>
-        <Box sx={{ pt: 2}}>
-            <Typography color="textSecondary"  variant="h5" >
-                <Typography variant="h5" component="span"  sx={{ color: `${color || 'primary'}.main` }}>
+        <Box>
+            <Typography color="textSecondary" >
+                <Typography component="span"  sx={{ color: `${color || 'primary'}.main` }}>
                 {cliente} 
                 </Typography>{'  '}
                 {extra} 

@@ -1,9 +1,6 @@
-import { useState, useEffect, Component } from "react";
+import {useRef, useState, useEffect, Component } from "react";
 import axios from "axios";
-import {Grid,Stack,Typography,Paper} from '@mui/material';
-import Tablacliente2da from "../../Tablas/TablaCliente2da";
-
-import { styled } from '@mui/material/styles';
+import {Grid,Typography,Paper,Button,TextField} from '@mui/material';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid,
@@ -23,14 +20,27 @@ import DocuPDF from "../../docuPDF/DocuPDF";
 import EditarTablaEmbarque2da from "../../Editar/EditarTablaEmbarque2da";
 import EditIcon from '@mui/icons-material/Edit';
 import AnalyticEcommerce from "../../Alertas/AnalyticEcommerce";
-import { grey, lime } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
+import { BASE_URL } from "../../misc/consts";
+import ReactXlsxExport from "react-xlsx-export"
+
+import ReactToPrint from 'react-to-print';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 const TableAxios = () => {
 //1 - configuramos Los hooks
-const [products, setProducts] = useState( [] )
+const [products, setProducts] = useState([]);
 const [openEdit, setOpenEdit] = useState(false);
 const [selectedUser, setSelectedUser] = useState([]);
+const componentRef = useRef();
 
+const [FechaInicio, setFechaInicio] = useState(new Date());
+const [FechaTermino, setFechaTermino] = useState(new Date());
+
+
+const handleChangeInicio = () => {
+  setFechaInicio(FechaInicio);
+};
 
 class App extends Component{
     constructor (props) {
@@ -47,13 +57,15 @@ handleFileChange = e => {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = () => {
-        this.setState ({fileName: file.fileName, fileContent: reader.result})
+        this.setState ({fileName: file.Name, fileContent: reader.result})
+        console.log(reader)
     }
     reader.onerror = () => {
         console.log("No Coresponde", reader.error)
     }
 }
 }
+
 
 const [filterModel, setFilterModel] = React.useState({
     items: [
@@ -74,21 +86,13 @@ function QuickSearchToolbar() {
     );
   }
 
-
-  
-
-
 function CustomToolbar() {
     return (
       <GridToolbarContainer>
         <Grid xs={5}>
-        <GridToolbarFilterButton  
-        csvOptions={{
-            
-        }}
-        />
+        <GridToolbarFilterButton />
         </Grid>
-        <Grid xs={4}>
+        <Grid xs={2}>
         <QuickSearchToolbar />  
         </Grid>
         <Grid xs={1}>
@@ -105,13 +109,18 @@ function CustomToolbar() {
                 utf8WithBom: true,
             }}/>
         </Grid>
+        <Grid xs={1}>
+        <ReactXlsxExport data={products} filename="TransferView" />
+        </Grid>
       </GridToolbarContainer>
     );
   }
+  
+
 
 useEffect( ()=>{
     const getData = async () => {
-        await axios.get("http://localhost:3001/MostrarCliente").then((response) => {
+        await axios.get(`${BASE_URL}/MostrarCliente`).then((response) => {
             const data = response.data
             console.log(data)
             setProducts(data)
@@ -120,14 +129,7 @@ useEffect( ()=>{
     getData()
 }, [])
 
-const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
-  
+
   const columns = [
     {
       field: 'FechaDeTermino',
@@ -143,6 +145,12 @@ const Item = styled(Paper)(({ theme }) => ({
     {
       field: 'Empresa',
       headerName: 'Empresa',
+      width: 200,
+      editable: true,
+    },
+    {
+      field: 'Medidor',
+      headerName: 'Medidor',
       width: 200,
       editable: true,
     },
@@ -186,17 +194,81 @@ const Item = styled(Paper)(({ theme }) => ({
     
   ];
 
-  console.log(selectedUser)
+  const resumen = [
+    {
+      field: 'Empresa',
+      headerName: 'Empresa',
+      width: 200,
+    },
+    {
+      field: 'Medidor',
+      headerName: 'Medidor',
+      width: 200,
+      editable: true,
+    },
+    {
+      field: 'Producto',
+      headerName: 'Producto',
+      width: 200,
+    },
+    {
+        field: 'Embarque',
+        headerName: 'Embarque',
+        width: 200,
+      },
+    {
+      field: 'Masa',
+      headerName: 'Masa TON',
+      width: 150,
+    },
+    {
+      field: 'VolumenTon',
+      headerName: 'Volumen M3',
+      width: 150,
+    },
+  ];
 
   //<EditarTablaEmbarque/>
 //4 - renderizamos la datatable
+console.log(FechaInicio)
         return (
-            <>
+            <><Grid rowSpacing={4.5} columnSpacing={2.75}>
+            <Grid container rowSpacing={4.5} columnSpacing={2.75}>             
+                <Grid item xs={12}></Grid>
+                    <Grid xs={0}></Grid>
+                        <Grid item >
+                            <Paper elevation={24}>
+                                <TextField
+                                label="Fecha Inicio"
+                                type="date"
+                                onchange={setFechaInicio}
+                                sx={{ width: 300 }}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                                />
+                            </Paper>
+                        </Grid>
+                        <Grid item >
+                            <Paper elevation={24}>
+                                <TextField
+                                label="Fecha Termino"
+                                type="date"
+                                sx={{ width: 300 }}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                                />
+                            </Paper>
+                        </Grid>
+                    <Grid xs={2}></Grid>
+                </Grid>
+            </Grid>
             <Grid item xs={12}>
                 <Grid container>
                     <Grid item lg={12} md={8} sm={8} xs={12} sx={{ mt: 5 }}>
                         <Paper elevation={24}>
-                            <Box sx={{ height: 500, width: '100%' }}>
+                            <Box sx={{ height: 635, width: '100%' }}>
                                 <DataGrid
                                     //Traspasarlo a español sus componentes DataGrid
                                     localeText={esES.components.MuiDataGrid.defaultProps.localeText}
@@ -209,7 +281,7 @@ const Item = styled(Paper)(({ theme }) => ({
                                     experimentalFeatures={{ newEditingApi: true }}
                                     components={{
                                         LoadingOverlay: LinearProgress,
-                                        Toolbar: CustomToolbar,}}
+                                        Toolbar: CustomToolbar}}
                                         loading
                                     getRowSpacing={(params) => ({
                                         top: params.isFirstVisible ? 0 : 5,
@@ -245,68 +317,95 @@ const Item = styled(Paper)(({ theme }) => ({
                     </Grid>
                 </Grid>
             </Grid>
-        
+
+        <div  ref={componentRef}>
+        <Grid rowSpacing={4.5} columnSpacing={2.75}>
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>             
             <Grid item xs={12}></Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Grid xs={1.9}></Grid>
+                <Grid item xs={4}>
+                    <Paper elevation={24}>
+                        <AnalyticEcommerce xs={12} sm={6} md={4} lg={3} cliente="Fecha de Inicio" extra="asd" />
+                    </Paper>
+                </Grid>
+                <Grid item xs={4} >
+                    <Paper elevation={24}>
+                        <AnalyticEcommerce cliente="Fecha de Termino" extra="= fecha rango" />
+                    </Paper>
+                </Grid>
+              <Grid xs={2}></Grid>
+            </Grid>
+        </Grid>
+
+        <Grid rowSpacing={4.5} columnSpacing={2.75}>
+        <Grid container rowSpacing={4.5} columnSpacing={2.75}>             
+            <Grid item xs={12}></Grid>
+              <Grid item xs={0.5}></Grid>
+                <Grid item xs={2} sm={6} md={4} lg={2.7}>
                     <Paper elevation={24}>
                         <AnalyticEcommerce title="Medidor Numero" count="Lipigas" cliente="Cliente =" extra="5" />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={2} sm={6} md={4} lg={2.7}>
                     <Paper elevation={24}>
-                        <AnalyticEcommerce title="Nombre Cliente" count="Enap , COPEC" cliente="Producto =" extra="4"  />
+                        <AnalyticEcommerce title="Nombre Cliente" count="Enap" cliente="Producto =" extra="4"  />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={2} sm={6} md={4} lg={2.7}>
                     <Paper elevation={24}>
                         <AnalyticEcommerce title="Embarques" count="15"  cliente="T Masa =" extra="3810"   />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid item xs={2} sm={6} md={4} lg={2.7}>
                     <Paper elevation={24}>
                         <AnalyticEcommerce title="Medidos" count="Lipigas"  cliente="T Volumen =" extra="4097"   />
                     </Paper>
                 </Grid>                               
-            </Grid> 
-
-        <Grid container rowSpacing={1.5}>             
-            <Grid item xs={12}></Grid>
-            <Grid item xs={12}>
-                <Paper elevation={24}>
-                <Typography variant="h5" >ㅤFecha Inicio :  ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ Fecha Fin: ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ   </Typography>
-                </Paper>
             </Grid>
-        </Grid>
-
+            <Grid item xs={0.1}></Grid>
         <Grid item xs={12}>
                 <Grid container>
                     <Grid item lg={12} md={8} sm={8} xs={12} sx={{ mt: 5 }}>
                         <Paper elevation={24}>
-                            <Box sx={{ height: 500, width: '100%' }}>
+                            <Box sx={{ height: 680, width: '100%' }}>
                                 <DataGrid
                                     //Traspasarlo a español sus componentes DataGrid
                                     localeText={esES.components.MuiDataGrid.defaultProps.localeText}
                                     rows={products}
-                                    columns={columns}
+                                    columns={resumen}
+                                    filterModel={filterModel}
                                     disableSelectionOnClick
                                     experimentalFeatures={{ newEditingApi: true }}
                                     components={{
-                                        LoadingOverlay: LinearProgress,
-                                        Toolbar: CustomToolbar,}}
-                                        loading
-                                    {...products}
+                                        LoadingOverlay: LinearProgress}}
                                 />
                             </Box>
                         </Paper>
                     </Grid>
                 </Grid>
-            </Grid>
-            <h1> Test</h1>
-            <input type="file" onChange={<handleFileChange/>}>
-            </input>
-            <p>{<fileContent/>}</p>
+              </Grid>
+          </Grid>
+          </div>
 
+          <ReactToPrint
+                        trigger={() => ( 
+                        <Button 
+                        sx={{mt: 5 ,right: (theme) => theme.spacing(14), position: "absolute", }} 
+                        container 
+                        variant="outlined" 
+                        size="large" 
+                        startIcon={<PictureAsPdfIcon/>}>
+                          Exportar PDF
+                        </Button>
+                        )}
+                        content={() => componentRef.current}
+                        severity="success"
+                    />
+          {/* <Button variant="text" size="large"  startIcon={
+          <ReactToPrint
+                content={() => componentRef.current}
+                severity="success"
+            />}> Proximamente</Button> */}
 
             <EditarTablaEmbarque2da 
                   className="bi bi-pencil-fill"
@@ -314,9 +413,21 @@ const Item = styled(Paper)(({ theme }) => ({
                   setOpen={setOpenEdit}
                   user={selectedUser}
                   /> 
+
+            <h1> Test</h1>
+            <input type="file" onChange={<handleFileChange/>}></input>
+            <br/>
+            <p>{<fileName/>}</p>
+            <p>{<fileContent/>}</p>
+
+            
+
             </>
         )
-
 }
 
 export default TableAxios;
+
+
+
+

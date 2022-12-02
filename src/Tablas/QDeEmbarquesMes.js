@@ -6,10 +6,7 @@ import axios from 'axios';
 import { Box, Card, CardHeader } from '@mui/material';
 import { Grid, MenuItem, TextField } from '@mui/material';
 import { lime } from '@mui/material/colors';
-// utils
-// import { fNumber } from '../../../utils/formatNumber';
-// components
-// import { useChart } from '../../../components/chart';
+import { BASE_URL } from "../misc/consts";
 
 // ----------------------------------------------------------------------
 
@@ -33,55 +30,21 @@ const status = [
   }
 ];
 
-function QDeEmbarquesmes({ title, subheader, ...other }) {
+function QDeEmbarquesmes({ title, subheader,Empresa,Embarque, ...other}) {
 
   const [value, setValue] = useState('Dia');
-  const [series,setSeries] = useState([]);
-
   const [userList, setUserList] = useState([])
   const [result, setResult] = useState([])
-  const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
-  const [selectedUser, setSelectedUser] = useState([]);
-
-  const Embar = userList.map((i) => i.Embarque);
-  const ton = userList.map((i) => i.VolumenTon);
-  const m3 = userList.map((i) => i.Masa); 
-
-    let EMb = Embar.reduce(
-    (acc, r) => Number.parseInt(r) + acc, -Embar[0]);
-    EMb += Number.parseInt(Embar);  
-    let total = ton.reduce(
-      (acc, r) => Number.parseInt(r) + acc, -ton[0]);
-      total += Number.parseInt(ton);
-    let M3 = m3.reduce(
-      (acc, r) => Number.parseInt(r) + acc, -m3[0]);
-      M3 += Number.parseInt(m3);
-
- 
-  const [openEdit, setOpenEdit] = useState(false);
 
   useEffect( () => { 
     const getUsers = async () => {
-      const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+      const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
       setUserList(data)
-      const objList = {};
-      data.forEach((Empresa) => {
-      if (!objList[Empresa.Empresa]) objList[Empresa.Empresa] = { 
-        ... Empresa,
-        Embarque: 0,
-        cantidad: 0,
-      };
-      objList[Empresa.Empresa].cantidad += 0 ;
-      objList[Empresa.Empresa].Embarque += Empresa.Embarque;
-      });
-      const result = Object.keys(objList).map((key) => objList[key]);
-      setResult(result)
     }
     getUsers();
   }, []);
 
-  const chartSeries = result.map((i) => i.Embarque);
-
+  const chartSeries = Embarque;
 
   const chartOptions = ({
     tooltip: {
@@ -98,7 +61,7 @@ function QDeEmbarquesmes({ title, subheader, ...other }) {
       bar: { horizontal: true, barHeight: '40%', borderRadius: 5 },
     },
     xaxis: {
-      categories: [...result.map(i => i.Empresa)],
+      categories: Empresa,
     },
   });
 
@@ -110,25 +73,12 @@ function QDeEmbarquesmes({ title, subheader, ...other }) {
       <Grid item xs={12}>
       <Grid container alignItems="center" justifyContent="space-between">
       <Grid item>
-      </Grid>
-      <Grid item>
-      <TextField
-        id="standard-select-currency"
-        select
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        >
-      {status.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-          </MenuItem>
-          ))}
-          </TextField>
           </Grid>
           </Grid>
           </Grid>
           </Grid>
           <p> </p>
+          
         <ReactApexChart type="bar" series={[{ data: chartSeries }]} options={chartOptions}  height={400} />
       
       </Box>

@@ -18,6 +18,7 @@ import Fab from '@mui/material/Fab';
 import axios from 'axios';
 import Alertas from '../Alertas/Alertas';
 import { lime} from '@mui/material/colors';
+import { BASE_URL } from "../misc/consts";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,12 +47,12 @@ const Tablacliente2da = (data2) => {
   const [selectedUser, setSelectedUser] = useState([]);
 
   const init = async () => {
-		const { data } = await axios.post("http://localhost:3001/EditarCliente")
+		const { data } = await axios.post(`${BASE_URL}/EditarCliente`)
     console.log(data)
 	}
 
   const getUsers = async () => {
-    const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+    const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
     setUserList(data)
   }
   const [openEdit, setOpenEdit] = useState(false);

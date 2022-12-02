@@ -5,11 +5,11 @@ import { Navigate } from 'react-router-dom';
 const GuardedOperador = ({ children }) => {
     const handleRedirect = () => {
         const user = JSON.parse(localStorage.getItem('user'));
-        const permited = ['Administrador', 'Operador'];
+        const permited = ['Operador'];
         if (user?.Rut && permited.includes(user?.Cargo)) {
           return (<Fragment>{children}</Fragment>);
-        } else if (user?.Rut && user.Cargo === 'Cliente') {
-          return (<Navigate replace to="/Dashboard2da"/>);
+        } else if (user?.Rut && user.Cargo === 'Operador') {
+          return (<Navigate replace to="/ODashboard2da"/>);
         }
         return (<Navigate replace to="/"/>);
     };

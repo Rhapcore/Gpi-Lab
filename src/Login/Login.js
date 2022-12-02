@@ -1,27 +1,30 @@
 import React, {useState} from 'react'
-import { Grid,Paper, Avatar, TextField, Button, Typography,Link, LinearProgress} from '@mui/material/';
+import { Grid,Paper, TextField, Button, Typography,Link, LinearProgress} from '@mui/material/';
 import { LockOpen } from '@mui/icons-material'
 import LogoGpi from '../Imagenes/Logo-GPI.png';
+import LogoGpi2 from '../Imagenes/Logo-GPI2.png';
 import CardMedia from '@mui/material/CardMedia';
 import Box from "@mui/material/Box";
 import axios from "axios";
 import {Alert} from '@mui/material/';
 import "../Imagenes/Header.css";
 import Alertas from '../Alertas/Alertas';
-import { validateRUT, getCheckDigit, generateRandomRUT } from 'validar-rut'
+import { BASE_URL } from "../misc/consts";
+import { validateRUT } from 'validar-rut';
 
 
 const Login = () => {
 
     const paperStyle={padding :20,height:'90vh',width:400, margin:"10px auto"}
-    const avatarStyle={backgroundColor:'#1bbd7e'}
     const btnstyle={margin:'8px 0'}
     
     
     const [body, setBody] = useState({})
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage] = useState("");
 	const [isLoading, setIsLoading] = useState(false)
+    
+ 
 
     const inputChange = ({ target }) => {
         const { name, value } = target
@@ -31,29 +34,41 @@ const Login = () => {
             
         })
     }
-
-
     const onSubmit = () => {
-        
-        axios.post("http://localhost:3001/Login", body)
+        if (validateRUT(body.Rut) === true) {
+            axios.post(`${BASE_URL}/Login`, body)
             .then(({ data }) => {
                 setMensaje({
                     ident: new Date().getTime(),
-                    message: "Contraseña Correcta",
+                    message: "Contraseña correcta",
                     type: 'success'
                 })
                 localStorage.setItem('user', JSON.stringify(data))
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user?.Rut && user.Cargo === 'Administrador') {
+                    window.location.href="/ADashboard"
+                } else if (user?.Rut && user.Cargo === 'Operador') {
+                    window.location.href="/ODashboard"
+                } else if (user?.Rut && user.Cargo === 'Cliente') {
+                    window.location.href="/CDashboard2da"
+                }
                 setIsLoading(false)
-                window.location.href="/Dashboard"
             })
             .catch(({ response }) => {
                 setMensaje({
 					ident: new Date().getTime(),
-					message: response.data,
+					message: "Contraseña incorrecta",
 					type: 'error'
 				})
             })
             
+        } else {
+            setMensaje({
+                ident: new Date().getTime(),
+                message: "El Rut ingresado no Corresponde",
+                type: 'error'
+            })
+        }
         }
 
     return(
@@ -76,7 +91,7 @@ const Login = () => {
                         component="img"
                         src={ LogoGpi }
                     />
-                    <h2>Iniciar Session </h2>
+                    <h2>Iniciar Sesión </h2>
                 </Grid>
                 <TextField
                 fullWidth
@@ -95,8 +110,8 @@ const Login = () => {
                 color='primary'
                 margin='normal'
                 variant='outlined'
-                label='Password'
-                type="Password"
+                label='Clave'
+                type="password"
                 value={body.password}
                 onChange={inputChange}
                 name='password'
@@ -112,23 +127,28 @@ const Login = () => {
                 fullWidth
                 >
                     
-                    Sign in
+                    INGRESAR
                 </Button>
                 <p> </p>
                 <Typography >
-                     <Link href="/404error" >
-                        Olvido password ?
-                </Link>
                 <p> </p>
                 </Typography>
-                
+                <img style={{paddingLeft: 250 }} src={ LogoGpi2 } className="imagenLogoGrande"/>
             </Paper>
         </Grid>
         {errorMessage &&
             <Alert type="error" messages={errorMessage} autoclose={0.1} />
         }
         </Box>
+        
+        
         </>
     )
 }
 export default Login
+
+/*
+<Link href="/404error" >
+¿Olvidaste tú clave?
+</Link>
+*/

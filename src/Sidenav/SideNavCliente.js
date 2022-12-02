@@ -1,24 +1,20 @@
-import { Box, Typography, List, ListItemIcon,ListItemText, Grid, ListItemButton, ListSubheader, Paper, Menu} from '@mui/material';
+import { Box, Typography, List, ListItemIcon,ListItemText, Grid, ListItemButton, ListSubheader, Paper} from '@mui/material';
 import * as React from 'react';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 
 
 // icons import 
-import GroupIcon from '@mui/icons-material/Group';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import SettingsIcon from '@mui/icons-material/Settings';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import Divider from '@mui/material/Divider';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // imagen
-import LogoGpi2 from '../Imagenes/Logo-GPI2.png';
 import LogoGpi from '../Imagenes/Logo-GPI.png';
 import "../Imagenes/Header.css";
 
 import Avatar from '@mui/material/Avatar';
-import { deepOrange, lime } from '@mui/material/colors';
-import Stack from '@mui/material/Stack';
+import { lime } from '@mui/material/colors';
 
 const FireNav = styled(List)({
   "& .MuiListItemButton-root": {
@@ -35,7 +31,7 @@ const FireNav = styled(List)({
 });
 
 
-const SideNav = () => {
+const SideNavCliente = () => {
   
  // const [open, setOpen] = React.useState(true);
  const user = JSON.parse(localStorage.getItem('user'));
@@ -90,60 +86,30 @@ const SideNav = () => {
     <ListItemButton>
           <Grid
         container
-        spacing={-1}
+        spacing={2}
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: '15vh', paddingLeft: 10 }}
+        style={{ minHeight: '15vh', paddingLeft: 60 }}
       >
         <Grid item xs={12}>
-        <Typography style={{paddingLeft: 10 }}>Nombre Empresa</Typography>
-        <Typography style={{paddingLeft: 10 }}>Nombre Ubicacion</Typography>
-              <AccountCircleIcon 
-              sx={{ width: 80, height: 80}}
-              style={{paddingLeft: 30 }}
-              />
-                <Typography  style={{paddingLeft: 20 }}>{user.Cargo}</Typography>
-                <Typography  style={{paddingLeft: 20 }}>{user.Rut}</Typography>
-                <Typography  style={{paddingLeft: 20 }}>{user.Nombre}</Typography>
+        <Avatar
+                anchororigin={{ vertical: 'top'}}
+                sx={{ width: 80, height: 80, bgcolor: lime[500]  }}
+              ><AccountCircleIcon sx={{ width: 80, height: 80}}/></Avatar>
+                <Typography variant="h6">{user.Cargo}</Typography>
+                <Typography variant="h6">{user.Nombre}</Typography>
         </Grid>   
         
       </Grid>
     </ListItemButton>
     <Divider />
-    <ListItemButton href="/ADashboard2da" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
+
+    <ListItemButton href="/CDashboard2da" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
       <ListItemIcon>
           <LeaderboardIcon />
       </ListItemIcon>
       <ListItemText primary="Panel de búsqueda" />
-    </ListItemButton>
-
-    <ListItemButton href="/AAcuerdoComercial" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <LeaderboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Acuerdo Comercial" />
-    </ListItemButton>
-
-    <ListItemButton href="/ADashboard" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <LeaderboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Indicadores" />
-    </ListItemButton>
-
-    <ListItemButton href="/AUsuarios" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <GroupIcon />
-      </ListItemIcon>
-      <ListItemText primary="Cuentas Usuarios" />
-    </ListItemButton>
-
-    <ListItemButton href="/Opciones" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <SettingsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Opciones" />
     </ListItemButton>
 
     <ListItemButton onClick={() => {
@@ -154,10 +120,8 @@ const SideNav = () => {
           <PersonOffIcon />
       </ListItemIcon>
       <ListItemText primary="Cerrar Session"/>
-      
     </ListItemButton>
     </List>
-    <img style={{paddingLeft: 90 }} src={ LogoGpi2 } className="imagenLogoGrande"/>
     <List sx={{ py: 30, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
     </List>
           </FireNav>
@@ -168,4 +132,4 @@ const SideNav = () => {
   );
 }
 
-export default SideNav;
+export default SideNavCliente;

@@ -43,14 +43,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import EditarTablaEmbarque from '../Editar/EditarTablaEmbarque';
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import Fab from '@mui/material/Fab';
-
 import axios from 'axios';
-import Alertas from '../Alertas/Alertas';
 import { lime} from '@mui/material/colors';
+import { BASE_URL } from "../misc/consts";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -75,30 +73,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const Tablacliente = () => {
 
   const [userList, setUserList] = useState([])
-  const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
   const [selectedUser, setSelectedUser] = useState([]);
 
-  const init = async () => {
-		const { data } = await axios.post("http://localhost:3001/EditarCliente")
-    console.log(data)
-	}
-
   const getUsers = async () => {
-    const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+    const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
     setUserList(data)
   }
 
   const [openEdit, setOpenEdit] = useState(false);
 
-  useEffect( () => { getUsers() 
-    
-  
-  }, [getUsers()]);
-
     return(
 
     <TableContainer component={Paper} elevation={2}>
-        <Alertas message={mensaje} />
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>

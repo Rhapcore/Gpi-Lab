@@ -5,16 +5,13 @@ import { useTheme } from '@mui/material/styles';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
-import axios from 'axios';
 import { grey, lime, red } from '@mui/material/colors';
 
 // ==============================|| SALES COLUMN CHART ||============================== //
 
-const TipoDeproductos = () => {
+const TipoDeproductos = ({result,retonTipoPro,rem3TipoPro}) => {
 
     const theme = useTheme();
-    const [userList, setUserList] = useState([])
-    const [result, setResult] = useState([])
     const [series,setSeries] = useState([]);
     const { primary, secondary } = theme.palette.text;
     const line = theme.palette.black;
@@ -23,45 +20,15 @@ const TipoDeproductos = () => {
     const successDark = red[1000];
 
     useEffect( () => { 
-        const getUsers = async () => {
-            const {data} = await axios.get("http://localhost:3001/MostrarCliente");
-            setUserList(data);
-            const objList = {};
-            data.forEach((Producto) => {
-                if (!objList[Producto.Producto]) objList[Producto.Producto] = { ... Producto, cantidad: 0};
-                objList[Producto.Producto].cantidad += 0 ;
-                objList[Producto.Producto].Embarque += Producto.Embarque;
-                objList[Producto.Producto].VolumenTon += Producto.VolumenTon;
-                objList[Producto.Producto].Masa += Producto.Masa;
-            });
-            const result = Object.keys(objList).map((key) => objList[key]);
-            setResult(result);
-            }
-            getUsers();
-        }, []);
-
-    useEffect( () => { 
-
-        const m3 = result.map((i) => i.Masa);
-        const rem3 = result.map((i) => i.Masa);
-        const reton = result.map((i) => i.VolumenTon);
-
-        let totalreton = reton.reduce(
-            (acc, r) => Number.parseInt(r) + acc, -reton[0]);
-            totalreton += Number.parseInt(reton);
-        let M3 = m3.reduce(
-            (acc, r) => Number.parseInt(r) + acc, -reton[0]);
-            M3 += Number.parseInt(m3);
-
         setSeries([
                 {
                 name: 'Suma de TON ACUM',
-                data: reton,
+                data: retonTipoPro,
                 },{
                 name: 'Suma de VOLUM ACUM',
-                data: rem3,
+                data: rem3TipoPro,
                 }]) }, 
-        [userList]);
+        [result]);
 
         
 const columnChartOptions = {

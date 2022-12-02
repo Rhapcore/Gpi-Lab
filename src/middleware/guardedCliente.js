@@ -5,8 +5,11 @@ import { Navigate } from 'react-router-dom';
 const GuardedCliente = ({ children }) => {
     const handleRedirect = () => {
         const user = JSON.parse(localStorage.getItem('user'));
-        if (user?.Rut) {
+        const permited = ['Cliente'];
+        if (user?.Rut && permited.includes(user?.Cargo)) {
           return (<Fragment>{children}</Fragment>);
+        } else if (user?.Rut && user.Cargo === 'Cliente') {
+          return (<Navigate replace to="/CDashboard2da"/>);
         }
         return (<Navigate replace to="/"/>);
     };

@@ -7,10 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Editarusuario from '../Editar/EditarUsuario';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Alertas from '../Alertas/Alertas';
+import { BASE_URL } from "../misc/consts";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,13 +32,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const TablaClienprod = () => {
+const TablaClienprod = ({result, TotalEmbarque, TotalTonneladas, TotalVolumen}) => {
 
   const [userList, setUserList] = useState([])
-  const [result, setResult] = useState([])
-  const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
-  const [selectedUser, setSelectedUser] = useState([]);
-
+  // const [result, setResult] = useState([])
+  const [mensaje] = useState({ ident: null, message: null, type: null })
+/*
   const Embar = userList.map((i) => i.Embarque);
   const ton = userList.map((i) => i.VolumenTon);
   const m3 = userList.map((i) => i.Masa); 
@@ -52,14 +51,14 @@ const TablaClienprod = () => {
     let M3 = m3.reduce(
       (acc, r) => Number.parseInt(r) + acc, -m3[0]);
       M3 += Number.parseInt(m3);
-
+*/
  
-  const [openEdit, setOpenEdit] = useState(false);
 
   useEffect( () => { 
     const getUsers = async () => {
-      const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+      const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
       setUserList(data)
+      /*
       const objList = {};
       data.forEach((Producto) => {
       if (!objList[Producto.Producto]) objList[Producto.Producto] = { 
@@ -74,8 +73,10 @@ const TablaClienprod = () => {
       objList[Producto.Producto].VolumenTon += Producto.VolumenTon ;
       objList[Producto.Producto].Masa += Producto.Masa;
       });
+      
       const result = Object.keys(objList).map((key) => objList[key]);
       setResult(result)
+      */
     }
     getUsers();
   }, []);
@@ -100,8 +101,8 @@ const TablaClienprod = () => {
                   {user.Producto}
                 </StyledTableCell>
                 <StyledTableCell aria-label="customized table">{user.Embarque}</StyledTableCell>
+                <StyledTableCell aria-label="customized table">{user.VolumenTon} </StyledTableCell>
                 <StyledTableCell aria-label="customized table">{user.Masa}</StyledTableCell>
-                <StyledTableCell aria-label="customized table">{user.VolumenTon}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
@@ -111,9 +112,9 @@ const TablaClienprod = () => {
         <TableHead>
         <TableRow>
         <StyledTableCell >TOTAL GENERAL</StyledTableCell>
-        <StyledTableCell aria-label="customized table"> {EMb} </StyledTableCell>
-        <StyledTableCell aria-label="customized table"> {M3} </StyledTableCell>
-        <StyledTableCell aria-label="customized table"> {total} </StyledTableCell>
+        <StyledTableCell aria-label="customized table"> {TotalEmbarque} </StyledTableCell>
+        <StyledTableCell aria-label="customized table"> {TotalTonneladas} </StyledTableCell>
+        <StyledTableCell aria-label="customized table"> {TotalVolumen} </StyledTableCell>
         </TableRow>
         </TableHead>
         </Table>

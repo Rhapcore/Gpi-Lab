@@ -6,33 +6,13 @@ import { useTheme } from '@mui/material/styles';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 
-import axios from 'axios';
 import { grey, lime, red } from '@mui/material/colors';
-
-
-// CSV
-/*
-const csv = require("csv-parser")
-const fs = require ("fs")
-const results = [];
-
-fs.createReadStream("db_transferviwe.csv")
- .pipe(csv({}))
- .on("data", (data) => results.pucsh(data))
- .on("end", () => {
-    console.log(results)
- });
-*/
-// chart options
-
 
 // ==============================|| SALES COLUMN CHART ||============================== //
 
-const Tomm3 = () => {
+const Tomm3 = ({cateTon, TonAcum, VolumenAcum, result}) => {
     const theme = useTheme();
     const { primary, secondary } = theme.palette.text;
-    const [userList, setUserList] = useState([])
-    const [result, setResult] = useState([])
     const [series,setSeries] = useState([{}]);
     const line = theme.palette.divider;
     const warning = lime[300];
@@ -40,49 +20,15 @@ const Tomm3 = () => {
     const successDark = red[1000];
 
     useEffect( () => { 
-        const getUsers = async () => {
-          const {data} = await axios.get("http://localhost:3001/MostrarCliente")
-          setUserList(data)
-          const objList = {};
-          data.forEach((FechaDeTermino) => {
-          if (!objList[FechaDeTermino.FechaDeTermino]) objList[FechaDeTermino.FechaDeTermino] = { 
-            ... FechaDeTermino,
-            VolumenTon: 0,
-            Masa: 0,
-            cantidad: 0,
-          };
-          objList[FechaDeTermino.FechaDeTermino].cantidad += 0 ;
-          objList[FechaDeTermino.FechaDeTermino].VolumenTon += FechaDeTermino.VolumenTon ;
-          objList[FechaDeTermino.FechaDeTermino].Masa += FechaDeTermino.Masa;
-          });
-          const result = Object.keys(objList).map((key) => objList[key]);
-          setResult(result)
-        }
-        getUsers(result);
-      }, []);
-
-    useEffect( () => { 
-
-        const m3 = result.map((i) => i.Masa);
-        const rem3 = result.map((i) => i.Masa);
-        const reton = result.map((i) => i.VolumenTon);
-
-        let totalreton = reton.reduce(
-            (acc, r) => Number.parseInt(r) + acc, -reton[0]);
-            totalreton += Number.parseInt(reton);
-        let M3 = m3.reduce(
-            (acc, r) => Number.parseInt(r) + acc, -reton[0]);
-            M3 += Number.parseInt(m3);
-
         setSeries([
                 {
                 name: 'Suma de TON ACUM',
-                data: reton,
+                data: TonAcum,
                 },{
                 name: 'Suma de VOLUM ACUM',
-                data: rem3,
+                data: VolumenAcum,
                 }]) }, 
-        [userList]);
+        [result]);
 
         const columnChartOptions = {
             chart: {
@@ -167,7 +113,7 @@ const Tomm3 = () => {
                         colors: [secondary, secondary, secondary, secondary, secondary, secondary]
                     }
                 },
-                categories: [...result.map(i => i.FechaDeTermino)],
+                categories: cateTon,
             },
             yaxis: {
                 labels: {

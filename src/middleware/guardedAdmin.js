@@ -9,9 +9,9 @@ const GuardedAdmin = ({ children }) => {
         if (user?.Rut && permited.includes(user?.Cargo)) {
           return (<Fragment>{children}</Fragment>);
         } else if (user?.Rut && user.Cargo === 'Operador') {
-          return (<Navigate replace to="/Opciones"/>);
+          return (<Navigate replace to="/AOpciones"/>);
         } else if (user?.Rut && user.Cargo === 'Cliente') {
-          return (<Navigate replace to="/Dashboard2da"/>);
+          return (<Navigate replace to="/ADashboard2da"/>);
         }
         return (<Navigate replace to="/"/>);
     };

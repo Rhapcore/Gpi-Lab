@@ -8,6 +8,7 @@ import ReactApexChart from 'react-apexcharts';
 
 import axios from 'axios';
 import { grey, lime, red } from '@mui/material/colors';
+import { BASE_URL } from '../misc/consts';
 
 
 // CSV
@@ -42,7 +43,7 @@ const SegmentacionClienteproducto = () => {
 
     useEffect( () => { 
         const getUsers = async () => {
-          const {data} = await axios.get("http://localhost:3001/MostrarCliente")
+          const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
           setUserList(data)
           const objList = {};
           data.forEach((Empresa) => {
@@ -59,7 +60,7 @@ const SegmentacionClienteproducto = () => {
           const result = Object.keys(objList).map((key) => objList[key]);
           setResult(result)
         }
-        getUsers(result);
+        getUsers();
       }, []);
 
 

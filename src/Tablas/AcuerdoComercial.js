@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Editarusuario from '../Editar/EditarUsuario';
+import EditarAcuerdoComercial from '../Editar/EditarAcuerdoComercial';
 import { useState, useEffect } from 'react';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -39,49 +39,55 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const Tablausuarios = () => {
+const AcuerdoComercial = ({userList}) => {
 
-  const [userList, setUserList] = useState([])
   const [mensaje ] = useState({ ident: null, message: null, type: null })
   const [selectedUser, setSelectedUser] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
 
-useEffect( () => { 
-  const getUsers = async () => {
-    const {data} = await axios.get(`${BASE_URL}/TablaUsuarios`)
-    setUserList(data)
-  }
-  getUsers();
-}, [userList]);
-  
-  
+const TMP = userList.map((i) => i.TMProgramaPorAcuerdos);
+const TMR = userList.map((i) => i.TMRecepcionada);
 
+let totaltotal = TMP.reduce(
+  (acc, r) => Number.parseInt(r) + acc, -TMP[0]);
+  totaltotal = Number(TMR / TMP).toFixed(2);
 
     return(
-
     <TableContainer component={Paper} elevation={2}>
         <Alertas message={mensaje} />
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>ID</StyledTableCell>
-              <StyledTableCell>Nombres</StyledTableCell>
-              <StyledTableCell>Apellidos</StyledTableCell>
-              <StyledTableCell>Rut</StyledTableCell>
-              <StyledTableCell>Cargo</StyledTableCell>
-              <StyledTableCell>Acciones</StyledTableCell>
+              <StyledTableCell>Nombre Empresa</StyledTableCell>
+              <StyledTableCell>Producto</StyledTableCell>
+              <StyledTableCell>Mes/Año</StyledTableCell>
+              <StyledTableCell>TM Programa por Acuerdos</StyledTableCell>
+              <StyledTableCell>TM Recepcionada</StyledTableCell>
+              <StyledTableCell>TM Diferencia</StyledTableCell>
+              <StyledTableCell>% Recepcianado</StyledTableCell>
+              <StyledTableCell>% Tolerancia</StyledTableCell>
+              <StyledTableCell>Minimo Tolerancia</StyledTableCell>
+              <StyledTableCell>Saldo</StyledTableCell>
+              <StyledTableCell>Maxima Tolerancia</StyledTableCell>
+              <StyledTableCell>Saldo</StyledTableCell>
+              <StyledTableCell>Accion</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
           {userList.map((user, index) => (
               <StyledTableRow key={index}>
-                <StyledTableCell component="th" scope="row">
-                  {user.Id}
-                </StyledTableCell>
-                <StyledTableCell>{user.FristName}</StyledTableCell>
-                <StyledTableCell>{user.LastName}</StyledTableCell>
-                <StyledTableCell>{user.Rut}</StyledTableCell>
-                <StyledTableCell>{user.Cargo}</StyledTableCell>
+                <StyledTableCell>{user.NombreEmpresa}</StyledTableCell>
+                <StyledTableCell>{user.Producto}</StyledTableCell>
+                <StyledTableCell>{user.MesAño}</StyledTableCell>
+                <StyledTableCell>{user.TMProgramaPorAcuerdos}</StyledTableCell>
+                <StyledTableCell>{user.TMRecepcionada}</StyledTableCell>
+                <StyledTableCell>{TMP - TMR}</StyledTableCell>
+                <StyledTableCell>{totaltotal}%</StyledTableCell>
+                <StyledTableCell>{user.Tolerancia}</StyledTableCell>
+                <StyledTableCell>{user.MinimoTolerancia}</StyledTableCell>
+                <StyledTableCell></StyledTableCell>
+                <StyledTableCell>{user.MaximaTolerancia}</StyledTableCell>
+                <StyledTableCell></StyledTableCell>
                 <StyledTableCell>
                     <Fab
                     onClick={() => {setOpenEdit(true);setSelectedUser(user);}}
@@ -96,7 +102,7 @@ useEffect( () => {
             ))}
           </TableBody>
         </Table>
-      <Editarusuario 
+      <EditarAcuerdoComercial 
                   className="bi bi-pencil-fill"
                   open={openEdit}
                   setOpen={setOpenEdit}
@@ -107,7 +113,7 @@ useEffect( () => {
 }
 
 
-export default Tablausuarios;
+export default AcuerdoComercial;
 
 /*
 // Eliminar

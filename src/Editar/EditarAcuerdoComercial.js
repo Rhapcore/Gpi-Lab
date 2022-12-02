@@ -28,7 +28,7 @@ const Cargo = [
     {value: 'No habilitado',label: 'No habilitado'},
 ];
 
-const Editarusuario = ({user ,open, setOpen }) => {
+const EditarAcuerdoComercial = ({user ,open, setOpen }) => {
 
     const handleClose = () => setOpen(false);
     const [body, setBody] = useState({});
@@ -44,12 +44,10 @@ const Editarusuario = ({user ,open, setOpen }) => {
     
     useEffect(() => {
         const onEdit = async () => {
-            
             try {
                 const sentBody = { ...user, ...body};
                 sentBody.Id = user.Id;
-              const {data} = await axios.post(`${BASE_URL}/Editar`, sentBody);
-              console.log(data)
+              const {data} = await axios.post(`${BASE_URL}/EditarAcuerdoComercial`, sentBody);
               
             handleClose()
             } catch (response) {
@@ -75,71 +73,67 @@ const Editarusuario = ({user ,open, setOpen }) => {
             >
                 <Box sx={style }>
                     <Typography id="modal-modal-title" variant="h4" component="h4">
-                        Editar Cliente
+                        Editar Acuerdo Comercial
                     </Typography>
                     <i>ㅤㅤ</i>
                                 <div>
-                                        <TextField
+                                <TextField 
                                         sx={{ m: 1 }}
-                                        label='Nombres' 
-                                        name='FristName'
-                                        value={body.FristName}
-                                        defaultValue={user.FristName}
+                                        label='Toneladas Metricas' 
+                                        name='TMProgramaPorAcuerdos' 
+                                        value={body.TMProgramaPorAcuerdos}
+                                        defaultValue={user.TMProgramaPorAcuerdos}
                                         onChange={onChange}
                                         />
                                         <p> </p>
                                         <TextField 
                                         sx={{ m: 1 }}
-                                        label='Apellido' 
-                                        name='LastName'
-                                        placeholder='Ingresa Apellido'
-                                        value={body.LastName}
-                                        defaultValue={user.LastName}
+                                        label='Fecha Inicio'
+                                        value={body.MesAño}
+                                        defaultValue={user.MesAño}
                                         onChange={onChange}
                                         />
                                         <p> </p>
                                         <TextField 
                                         sx={{ m: 1 }}
-                                        label='Rut' 
-                                        name='Rut'
-                                        placeholder='Ingresa Rut'
-                                        value={body.Rut}
-                                        defaultValue={user.Rut}
+                                        label='Fecha Termino'
+                                        value={body.MesAño}
+                                        defaultValue={user.MesAño}
                                         onChange={onChange}
                                         />
                                         <p> </p>
-                                            <TextField 
-                                            sx={{ m: 1 }} 
-                                            label="Cargo" 
-                                            name='Cargo'
-                                            defaultValue={user.Cargo} 
-                                            value={body.Cargo}
-                                            onChange={onChange}
-                                            select
-                                            >
-                                            {Cargo.map((option) => (
-                                            <MenuItem 
-                                            key={option.value} 
-                                            value={option.value}>
-                                            {option.label}
-                                            </MenuItem>
-                                            ))}
-                                            </TextField>
+                                        <TextField 
+                                        sx={{ m: 1 }}
+                                        label='% de Tolerancia' 
+                                        name='% de Tolerancia' 
+                                        placeholder='% de Tolerancia' 
+                                        value={body.Tolerancia}
+                                        defaultValue={user.Tolerancia}
+                                        onChange={onChange}
+                                        />
                                         <p> </p>
                                         <TextField 
                                         sx={{ m: 1 }}
-                                        label='password' 
-                                        name='password'
-                                        placeholder='Ingresa password'
-                                        value={body.password}
-                                        defaultValue={user.password}
+                                        label='Minimo de Tolerancia' 
+                                        name='Minimo de Tolerancia' 
+                                        placeholder='Minimo de Tolerancia' 
+                                        value={body.MinimoTolerancia}
+                                        defaultValue={user.MinimoTolerancia}
+                                        onChange={onChange}
+                                        />
+                                        <p> </p>
+                                        <TextField 
+                                        sx={{ m: 1 }}
+                                        label='Maximo de Tolerancia' 
+                                        name='Maximo de Tolerancia' 
+                                        placeholder='Maximo de Tolerancia' 
+                                        value={body.MaximaTolerancia}
+                                        defaultValue={user.MaximaTolerancia}
                                         onChange={onChange}
                                         />
                                         <p> </p>
                                     <Button variant="outlined" sx={{ m: 1 }} color="success"
                                         onClick={() => {
-                                            console.log(validateRUT(body.Rut))
-                                            if (validateRUT(body.Rut) === true) {
                                                 try {
                                                     setSendData(!sendData);
                                                     setOpen(false)
@@ -151,13 +145,6 @@ const Editarusuario = ({user ,open, setOpen }) => {
                                                 } catch (err) {
                                                     console.log(err);
                                                 }
-                                            } else {
-                                                setMensaje({
-                                                    ident: new Date().getTime(),
-                                                    message: "El Rut ingresado no Corresponde",
-                                                    type: 'error'
-                                                })
-                                            }
                                         }}>
                                         Guardar
                                     </Button>
@@ -174,7 +161,7 @@ const Editarusuario = ({user ,open, setOpen }) => {
     );
 }
 
-export default Editarusuario;
+export default EditarAcuerdoComercial;
 
 
                                     
