@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import {Grid,Typography} from '@mui/material';
+import {Grid} from '@mui/material';
 
 import SideNav from '../Sidenav/SideNav';
 import AcuerdoComercial2 from './subPaginas/AcuerdoComercial2';

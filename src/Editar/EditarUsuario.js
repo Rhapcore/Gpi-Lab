@@ -34,6 +34,7 @@ const Editarusuario = ({user ,open, setOpen }) => {
     const [body, setBody] = useState({});
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
     const [sendData, setSendData] = useState(false);
+    
     const onChange = ({ target }) => {
         const { name, value } = target
         setBody({
@@ -44,7 +45,26 @@ const Editarusuario = ({user ,open, setOpen }) => {
     
     useEffect(() => {
         const onEdit = async () => {
-            
+            try {
+                const sentBody = { ...user, ...body};
+                sentBody.Id = user.Id;
+              const {data} = await axios.post(`${BASE_URL}/Editar`, sentBody);
+              console.log(data)
+              
+            handleClose()
+            } catch (response) {
+                setMensaje({
+                    ident: new Date().getTime(),
+                    message: "Error al editar los datos",
+                    type: 'error'
+                })
+          }};
+        
+        onEdit();
+    }, [sendData]);
+
+        useEffect(() => {
+        const onEdit = async () => {
             try {
                 const sentBody = { ...user, ...body};
                 sentBody.Id = user.Id;

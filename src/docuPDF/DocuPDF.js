@@ -1,15 +1,16 @@
-import React, { useRef, Component } from "react";
+import React, { useRef } from "react";
+// import  {Component } from "react";
 import ReactToPrint from 'react-to-print';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 // imagen
 import LogoGpi from '../Imagenes/Logo-GPI.png';
-import "../Imagenes/Header.css";
+import Image from "mui-image";
 
 const DocuPDF = () => {
 
     const componentRef = useRef();
-
+/*
     class App extends Component{
         constructor (props) {
             super (props);
@@ -30,6 +31,7 @@ const DocuPDF = () => {
         }
     }
 };
+*/
     
     return (
         <>
@@ -46,7 +48,7 @@ const DocuPDF = () => {
                             <tr className="column2">
                                 <tr>ㅤㅤㅤ</tr>
                                 <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
-                                <img src={ LogoGpi } className="imagenLogo300"/>
+                                <Image duration={1000} height="80%" width="100%" src={LogoGpi}/>
                                 <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
                                 <tr>ㅤㅤㅤ</tr>
                                 <tr></tr>

@@ -21,8 +21,6 @@ const AcuerdoComercial2 = () => {
         }
         getUsers();
       }, [userList]);
-    
-    console.log("afuera",userList)
 
     const TMP = Number.parseInt(userList.map((i) => i.TMProgramaPorAcuerdos));
     const TMR = Number.parseInt(userList.map((i) => i.TMRecepcionada));
@@ -34,8 +32,7 @@ const AcuerdoComercial2 = () => {
 
     return(
         <div>
-               <Grid>
-              <Typography variant="h5">  </Typography>
+            <Grid>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: "auto", sm: "auto", md: "auto" }}>
                 <Grid item xs={12} sx={{ mt: 5 }}>
                 <Paper xs={12} elevation={10}>

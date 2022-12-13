@@ -8,16 +8,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import EditarAcuerdoComercial from '../Editar/EditarAcuerdoComercial';
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
-// import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
-
-import axios from 'axios';
 import Alertas from '../Alertas/Alertas';
 import { lime } from '@mui/material/colors';
-import { BASE_URL } from "../misc/consts";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {

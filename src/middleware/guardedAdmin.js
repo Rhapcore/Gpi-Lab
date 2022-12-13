@@ -7,6 +7,7 @@ const GuardedAdmin = ({ children }) => {
         const user = JSON.parse(localStorage.getItem('user'));
         const permited = ['Administrador'];
         if (user?.Rut && permited.includes(user?.Cargo)) {
+          //return (<Navigate replace to="/ADashboard"/>);
           return (<Fragment>{children}</Fragment>);
         } else if (user?.Rut && user.Cargo === 'Operador') {
           return (<Navigate replace to="/AOpciones"/>);

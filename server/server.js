@@ -159,6 +159,26 @@ app.post('/EditarAcuerdoComercial', (req, res) => {
 	})
 })
 
+app.post('/GuardarHistorial', (req, res) => {
+	const {id, Fecha, Nombre, Rut, CambioRealizado, Modulo } = req.body;
+	db.all(`INSERT INTO HistorialLog (id, Fecha, Nombre,Rut ,CambioRealizado, Modulo) VALUES ('${id}', '${Fecha}', '${Nombre}','${Rut}', '${CambioRealizado}', '${Modulo}')`,(err, result) => {
+	if (err) {
+		res.status(500).send("Error al guardar el Historial");
+	  	} else {
+		res.status(200).send({ status: 'success', message: 'Historial creado' });
+  		}
+  	});
+  });
+
+app.get("/TablaHistorial", (req,res) => {
+    db.all("SELECT * FROM HistorialLog", (err, rows) => {
+        if (err) {
+            res.status(500).send(err)}
+            else {
+                res.status(200).send(rows)
+            }
+    })
+})
 
 app.listen(3001 , () => console.log("Listening at port 3001"))
 

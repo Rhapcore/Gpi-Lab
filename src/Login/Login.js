@@ -1,19 +1,24 @@
 import React, {useState} from 'react'
-import { Grid,Paper, TextField, Button, Typography,Link, LinearProgress} from '@mui/material/';
+import { Grid,Paper, TextField, Button, Typography, LinearProgress} from '@mui/material/';
 import { LockOpen } from '@mui/icons-material'
 import LogoGpi from '../Imagenes/Logo-GPI.png';
-import LogoGpi2 from '../Imagenes/Logo-GPI2.png';
-import CardMedia from '@mui/material/CardMedia';
 import Box from "@mui/material/Box";
 import axios from "axios";
 import {Alert} from '@mui/material/';
-import "../Imagenes/Header.css";
 import Alertas from '../Alertas/Alertas';
 import { BASE_URL } from "../misc/consts";
 import { validateRUT } from 'validar-rut';
 
+import { useNavigate } from "react-router-dom";
+import Image from 'mui-image';
+
+
+
 
 const Login = () => {
+    const navigate = useNavigate();
+    // const history = useHistory();
+      
 
     const paperStyle={padding :20,height:'90vh',width:400, margin:"10px auto"}
     const btnstyle={margin:'8px 0'}
@@ -38,6 +43,7 @@ const Login = () => {
         if (validateRUT(body.Rut) === true) {
             axios.post(`${BASE_URL}/Login`, body)
             .then(({ data }) => {
+                
                 setMensaje({
                     ident: new Date().getTime(),
                     message: "Contraseña correcta",
@@ -46,11 +52,18 @@ const Login = () => {
                 localStorage.setItem('user', JSON.stringify(data))
                 const user = JSON.parse(localStorage.getItem('user'));
                 if (user?.Rut && user.Cargo === 'Administrador') {
-                    window.location.href="/ADashboard"
+                    //window.location.pathname="/ADashboard"
+                    //return (<Navigate replace to="/ADashboard"/>);
+                    navigate("/ADashboard2da")
+                    //window.location={ListItemLink}}
+                    //window.location.href=<ListItemLink 
+                    //component={DashboardFront} to="/ADashboard" />
                 } else if (user?.Rut && user.Cargo === 'Operador') {
-                    window.location.href="/ODashboard"
+                    navigate("/ODashboard2da")
+                    //window.location.href="/ODashboard"
                 } else if (user?.Rut && user.Cargo === 'Cliente') {
-                    window.location.href="/CDashboard2da"
+                    navigate("/CDashboard2da")
+                    //window.location.href="/CDashboard2da"
                 }
                 setIsLoading(false)
             })
@@ -75,25 +88,20 @@ const Login = () => {
         <>
         <Box
           sx={{
-            marginTop: 1,
+            marginTop: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-
-
         <Alertas message={mensaje} />
         <Grid> 
             <Paper elevation={20} style={paperStyle}>
                 <Grid align='center'>
-                     <CardMedia
-                        component="img"
-                        src={ LogoGpi }
-                    />
-                    <h2>Iniciar Sesión </h2>
+                    <Image duration={3000} width="100%" src={ LogoGpi } />
+                    <Typography sx={{ mt: -5 }} variant="h4" display="block" >Iniciar Sesión</Typography>
                 </Grid>
-                <TextField
+                <TextField 
                 fullWidth
                 autoFocus
                 color='primary'
@@ -129,11 +137,14 @@ const Login = () => {
                     
                     INGRESAR
                 </Button>
+                <Button
+                onClick={onSubmit} 
+                />
                 <p> </p>
                 <Typography >
                 <p> </p>
                 </Typography>
-                <img style={{paddingLeft: 250 }} src={ LogoGpi2 } className="imagenLogoGrande"/>
+                <Typography align="center" variant="h4" > GPI Lab © </Typography>
             </Paper>
         </Grid>
         {errorMessage &&

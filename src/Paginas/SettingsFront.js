@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Grid,Typography} from '@mui/material';
 
 import SideNav from '../Sidenav/SideNav';
-import Settings from './subPaginas/Settings';
+import ConfiguracionTransverView from './subPaginas/Configuracion TransferView';
 
 const UsuarioFront = () => {
     return(
@@ -13,8 +13,8 @@ const UsuarioFront = () => {
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 30, sm: 20, md: 5 }}>
                 <Grid item xs={0.2}> </Grid>
                         <SideNav/>
-                <Grid item xs={9} >
-                <Settings/>
+                <Grid item xs={10}>
+                <ConfiguracionTransverView/>
             </Grid>
             </Grid>
             </Grid>

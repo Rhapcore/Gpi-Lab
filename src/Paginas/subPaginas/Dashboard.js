@@ -21,8 +21,32 @@ import axios from 'axios';
 import { BASE_URL } from '../../misc/consts';
 //import ReactToPrint from 'react-to-print';
 //import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import dayjs from "dayjs";
 
+import { styled } from '@mui/material/styles';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import moment from 'moment';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.success.white,
+      color: theme.palette.common.black,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 16,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 1,
+    },
+  }));
+  
 const Dashboard = () => {
     const [userList, setUserList] = useState([])
     const [resultTablaCli, setResultTablaCli] = useState([])
@@ -35,18 +59,49 @@ const Dashboard = () => {
     const [Empresa, setEmpresa] = useState([])
     const [Embarque, setEmbarque] = useState([])
     const componentRef = useRef();
-    const [data, setData] = useState([])
+    const [ search, setSearch ] = useState("")
+    const [ searchFIN, setSearchFIN ] = useState("")
+
+    //################# prueba de filtro #################
+    /*
+    const [ users, setUsers ] = useState([])
+    const showData = async () => {
+        const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
+        setUsers(data)
+        console.log("users",users)
+        
+     const testeo = !search ? users : users.filter((dato)=> dato.Empresa.toLowerCase().includes(search.toLocaleLowerCase()))
+     const fecha = !search ? users : users.filter((dato)=> dato.FechaDeTermino.toLowerCase().includes(search.toLocaleLowerCase()))
+
+    }
+*/
+const searcherINI = (e) => {
+    const FechaModi = moment(e.target.value).format('YYYY/MM/DD');
+    setSearch(FechaModi)
+    console.log(FechaModi)
+  }
+  const searcherFIN = (e) => {
+    const FechaModiFIN = moment(e.target.value).format('YYYY/MM/DD');
+    setSearchFIN(FechaModiFIN)
+    console.log(FechaModiFIN)
+  }   
+
+
+
+
 
     //################# Configuracion de Tomm3 #################
+    // FechaDeTermino
 
     // let filtrar = account.filter(n => n.date >  && n.date <)
-    
+
     useEffect( () => { 
         const getUsers = async () => {
             const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
-            setUserList(data)
+            const fecha = !search ? data : data.filter((dato)=> dato.FechaDeTermino >= search && dato.FechaDeTermino <= searchFIN)
+            setUserList(fecha)
             const objListTomm3 = {};
-            data.forEach((FechaDeTermino) => {
+            fecha.forEach((FechaDeTermino) => {
             if (!objListTomm3[FechaDeTermino.FechaDeTermino]) objListTomm3[FechaDeTermino.FechaDeTermino] = {
                 ...FechaDeTermino,
                 VolumenTon: 0,
@@ -70,7 +125,7 @@ const Dashboard = () => {
             //################# Configuracion de TablaClienprod ################# 
 
             const objListTablaCli = {};
-            data.forEach((Producto) => {
+            fecha.forEach((Producto) => {
             if (!objListTablaCli[Producto.Producto]) objListTablaCli[Producto.Producto] = { 
                 ...Producto,
                 Embarque: 0,
@@ -89,7 +144,7 @@ const Dashboard = () => {
             //################# Configuracion de QDeEmbarquesmes y Transporte Total #################
 
             const objListQDEEM = {};
-            data.forEach((Empresa) => {
+            fecha.forEach((Empresa) => {
             if (!objListQDEEM[Empresa.Empresa]) objListQDEEM[Empresa.Empresa] = { 
                 ...Empresa,
                 Embarque: 0,
@@ -97,6 +152,8 @@ const Dashboard = () => {
             };
             objListQDEEM[Empresa.Empresa].cantidad += 0 ;
             objListQDEEM[Empresa.Empresa].Embarque += Empresa.Embarque;
+            objListQDEEM[Empresa.Empresa].VolumenTon += Empresa.VolumenTon ;
+            objListQDEEM[Empresa.Empresa].Masa += Empresa.Masa;
             });
             const resultQDEEM = Object.keys(objListQDEEM).map((key) => objListQDEEM[key]);
             setResultQDEEM(resultQDEEM)
@@ -108,7 +165,7 @@ const Dashboard = () => {
             //################# Configuracion de Tipo de Producto #################
 
             const objListTipoPro = {};
-            data.forEach((Producto) => {
+            fecha.forEach((Producto) => {
                 if (!objListTipoPro[Producto.Producto]) objListTipoPro[Producto.Producto] = { ...Producto, cantidad: 0};
                 objListTipoPro[Producto.Producto].cantidad += 0 ;
                 objListTipoPro[Producto.Producto].Embarque += Producto.Embarque;
@@ -117,14 +174,9 @@ const Dashboard = () => {
             });
             const resultTipoPro = Object.keys(objListTipoPro).map((key) => objListTipoPro[key]);
             setResultTipoPro(resultTipoPro)
-
-
-            //################# Configuracion de Transporte Total #################
-          
-          
         }
         getUsers();
-      }, []);
+      }, [search, searchFIN]);
 
     //################# Configuracion de TablaClienprod ################# 
  
@@ -162,17 +214,10 @@ const Dashboard = () => {
 
     const rem3TipoPro = resultTipoPro.map((i) => i.Masa);
     const retonTipoPro = resultTipoPro.map((i) => i.VolumenTon);
-/*
-    const handleFilterDate = (date, field) => {
-        const filteredData = data.filter((item) => {
-          if (field === "inicio" && dayjs(item.date).isSameOrAfter(dayjs(date))) {
-            return item;
-          }
-        });
-    
-        setData(filteredData);
-      };
-*/
+
+    const rem3QDEEM = resultQDEEM.map((i) => i.Masa);
+    const retonQDEEM = resultQDEEM.map((i) => i.VolumenTon);
+
     return(
         <>
         <div ref={componentRef}>
@@ -182,22 +227,30 @@ const Dashboard = () => {
                         <Grid xs={0}></Grid>
                             <Grid item >
                                 <Paper elevation={24}>
-                                    <TextField
+                                <TextField
+                                    id="date Inicio"
                                     type="date"
-                                    className="form-control"
-                                    id="Inicio"
-                                    onChange={("inicio")}
-                                    />
+                                    label="Fecha Inicio"
+                                    sx={{ width: 220 }}
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    onChange={searcherINI}
+                                />
                                 </Paper>
                             </Grid>
                             <Grid item >
                                 <Paper elevation={24}>
-                                    <TextField
+                                <TextField
+                                    id="date Termino"
                                     type="date"
-                                    className="form-control"
-                                    id="Termino"
-                                    onChange={("Termino")}
-                                    />
+                                    label="Fecha Termino"
+                                    sx={{ width: 220 }}
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    onChange={searcherFIN}
+                                />
                                 </Paper>
                             </Grid>
                         <Grid xs={2}></Grid>
@@ -271,7 +324,7 @@ const Dashboard = () => {
                         <Paper elevation={10}>
                             <MainCard sx={{ mt: 4 }}>
                                 <Typography variant="h5" sx={{ mb: -10 }} > Segmentacion Cliente / Producto </Typography>
-                                <SegmentacionClienteproducto/>
+                                <SegmentacionClienteproducto result={resultQDEEM} rem3QDEEM={rem3QDEEM} retonQDEEM={retonQDEEM} />
                             </MainCard>
                         </Paper>
                         </Grid>
@@ -297,19 +350,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
-
-/*
- <Grid item xs={12}>
-                    <Grid container spacing={gridSpacing} >
-                        <Grid item lg={12} md={6} sm={6} xs={12} sx={{ mt: 1 }}>
-                        <Paper elevation={10}>
-                            <MainCard >
-                                    <Typography variant="h5" sx={{ mb: 1 }} > Tabla de Embarque </Typography>
-                                    <Tablacliente/>
-                            </MainCard>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </Grid>
-*/
+export default Dashboard;

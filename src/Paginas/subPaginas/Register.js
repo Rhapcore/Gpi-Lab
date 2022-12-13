@@ -1,4 +1,4 @@
-import React, { useState,useEffect}  from 'react'
+import React, { useState}  from 'react'
 // material mui
 import { Grid,Paper, Avatar, TextField, Button} from '@mui/material/';
 import Box from "@mui/material/Box"
@@ -7,6 +7,7 @@ import Alertas from '../../Alertas/Alertas';
 import MenuItem from '@mui/material/MenuItem';
 import { BASE_URL } from '../../misc/consts';
 import { validateRUT } from 'validar-rut';
+import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 const Cargo = [
@@ -19,11 +20,11 @@ const Cargo = [
 
 const Register = () => {
 
+    const navigate = useNavigate();
     const paperStyle={padding :30,height:'auto',width:450, margin:"20px auto"}
     const avatarStyle={backgroundColor:'#1bbd7e'}
-    const [openDialog, setOpenDialog] = useState(false)
+    const [setOpenDialog] = useState(false)
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
-    const [usuariosList, setUsuariosList] = useState([])
 
 const [body, setBody] = useState({ username: '', password: '' })
 
@@ -31,29 +32,31 @@ const handleDialog = () => {
     setOpenDialog(prev => !prev)
 }
 
-const init = async () => {
-    const { data } = await axios.post(`${BASE_URL}/Guardar`)
-    setUsuariosList(data)
-}
-
-const onChange = ({ target }) => {
+const Cambios = ({ target }) => {
     const { name, value } = target
     setBody({
         ...body,
         [name]: value
     })
 }
+const volver = async () => {
+    navigate("/AUsuarios")
+ }
+ 
 
 const onSubmit = async () => {
     if (validateRUT(body.Rut) === true) {
             try {
             const {data} = await axios.post(`${BASE_URL}/Guardar`, body)
+            const user = JSON.parse(localStorage.getItem('user'));
+            const {guardar} = await axios.post(`${BASE_URL}/GuardarHistorial`, body)
             setMensaje({
                 ident: new Date().getTime(),
                         message: data.message,
                         type: 'success'
             })
             handleDialog()
+            navigate("/AUsuarios")
 
             } catch (response) {
                 setMensaje({
@@ -70,8 +73,6 @@ const onSubmit = async () => {
         })
     }
 }
-
-  useEffect( () => {}, [onChange]);
 
     return(
         <>
@@ -100,7 +101,7 @@ const onSubmit = async () => {
                 placeholder='Ingresa Nombres' 
                 fullWidth 
                 value={body.FristName}
-                onChange={onChange}
+                onChange={Cambios}
                 />
                 <p> </p>
                 <TextField 
@@ -110,7 +111,7 @@ const onSubmit = async () => {
                 placeholder='Ingresa Apellido'
                 fullWidth 
                 value={body.LastName}
-                onChange={onChange}
+                onChange={Cambios}
                 />
                 <p> </p>
                 <TextField 
@@ -120,7 +121,7 @@ const onSubmit = async () => {
                 placeholder='Ingresa Rut' 
                 fullWidth 
                 value={body.Rut}
-                onChange={onChange}
+                onChange={Cambios}
                 />
                 <p> </p>
                 <TextField 
@@ -128,7 +129,7 @@ const onSubmit = async () => {
                 label="Cargo" 
                 name='Cargo'
                 value={body.Cargo}
-                onChange={onChange}
+                onChange={Cambios}
                 fullWidth
                 select
                 >
@@ -149,7 +150,7 @@ const onSubmit = async () => {
                 placeholder='Ingresa Password' 
                 fullWidth 
                 value={body.password}
-                onChange={onChange}
+                onChange={Cambios}
                 />
                <p> </p>
                 <p>ㅤ</p>
@@ -162,7 +163,7 @@ const onSubmit = async () => {
                     Agregar Usuario
                                     </Button>
                                     <i> </i>
-                <Button href='/AUsuarios'variant="outlined"  sx={{ m: 1 }} color="error">
+                <Button onClick={volver}  variant="outlined"  sx={{ m: 1 }} color="error">
                 ㅤㅤㅤCancelarㅤㅤㅤ
                                     </Button>
                 <p> </p>

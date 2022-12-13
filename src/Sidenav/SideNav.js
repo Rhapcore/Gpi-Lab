@@ -1,4 +1,4 @@
-import { Box, Typography, List, ListItemIcon,ListItemText, Grid, ListItemButton, ListSubheader, Paper, Menu} from '@mui/material';
+import { Box, Typography, List, ListItemIcon,ListItemText, Grid, ListItemButton, ListSubheader, Paper} from '@mui/material';
 import * as React from 'react';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -9,16 +9,15 @@ import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import Divider from '@mui/material/Divider';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import HistoryIcon from '@mui/icons-material/History';
 // imagen
+import Image from 'mui-image';
 import LogoGpi2 from '../Imagenes/Logo-GPI2.png';
 import LogoGpi from '../Imagenes/Logo-GPI.png';
-import "../Imagenes/Header.css";
+import LogoLipigas from '../Imagenes/Logo-Lipigas.png';
 
-import Avatar from '@mui/material/Avatar';
-import { deepOrange, lime } from '@mui/material/colors';
-import Stack from '@mui/material/Stack';
+import { Link } from "react-router-dom";
+import ListItem from "@mui/material/ListItem";
 
 const FireNav = styled(List)({
   "& .MuiListItemButton-root": {
@@ -39,6 +38,18 @@ const SideNav = () => {
   
  // const [open, setOpen] = React.useState(true);
  const user = JSON.parse(localStorage.getItem('user'));
+
+ function ListItemLink(props) {
+  const { icon, primary, to } = props;
+  return (
+    <li>
+      <ListItem button component={Link} to={to} sx={{ py: 3}} >
+        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        <ListItemText primary={primary} />
+      </ListItem>
+    </li>
+  );
+  }
 
 
   return (
@@ -62,20 +73,7 @@ const SideNav = () => {
       >
         <Paper elevation={0} sx={{ maxWidth: 256 }}>
           <FireNav component="nav" disablePadding>
-            <ListItemButton component="a" >
-              <img src={ LogoGpi } className="imagenLogo"/>
-              <ListItemIcon 
-              sx={{ fontSize: 20 }}></ListItemIcon>
-              <ListItemText
-                sx={{ my: 5 }}
-                primary=""
-                primaryTypographyProps={{
-                  fontSize: 30,
-                  fontWeight: "medium",
-                  letterSpacing: 0
-                }}
-              />
-            </ListItemButton>
+              <Image duration={1000} height="80%" width="100%" src={LogoGpi}/>
             <Divider />
     <List
     sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper' }}
@@ -88,76 +86,77 @@ const SideNav = () => {
   >
     
     <ListItemButton>
-          <Grid
+      <Grid
         container
         spacing={-1}
         direction="column"
-        alignItems="center"
-        justifyContent="center"
-        style={{ minHeight: '15vh', paddingLeft: 10 }}
-      >
-        <Grid item xs={12}>
-        <Typography style={{paddingLeft: 10 }}>Nombre Empresa</Typography>
-        <Typography style={{paddingLeft: 10 }}>Nombre Ubicacion</Typography>
-              <AccountCircleIcon 
-              sx={{ width: 80, height: 80}}
-              style={{paddingLeft: 30 }}
-              />
-                <Typography  style={{paddingLeft: 20 }}>{user.Cargo}</Typography>
-                <Typography  style={{paddingLeft: 20 }}>{user.Rut}</Typography>
-                <Typography  style={{paddingLeft: 20 }}>{user.Nombre}</Typography>
-        </Grid>   
-        
+        style={{ minHeight: '15vh'}}>
+        <Grid item xs={12} style={{ minHeight: '15vh' }}>
+          <Typography align="center" variant="h5">Lipigas </Typography>
+          <Typography align="center" variant="h5">Concon </Typography>
+          <p/>
+          <Divider/><Divider/>
+          <p/>
+          <Image duration={1000} height="100%" width="100%"  src={LogoLipigas}/>
+          <p/>
+          <Divider/><Divider/>
+          <p/>
+          <Typography align="center" variant="h5">{user.Rut}</Typography>
+          <Typography align="center" variant="h5">{user.Nombre}</Typography>
+          <Typography align="center" variant="h5">{user.Cargo}</Typography>
+        </Grid>
       </Grid>
     </ListItemButton>
+
     <Divider />
-    <ListItemButton href="/ADashboard2da" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <LeaderboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Panel de búsqueda" />
-    </ListItemButton>
 
-    <ListItemButton href="/AAcuerdoComercial" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <LeaderboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Acuerdo Comercial" />
-    </ListItemButton>
+    <ListItemLink 
+      as={Link} 
+      to="/ADashboard2da" 
+      primary="Panel de búsqueda" 
+      icon={<LeaderboardIcon />}/>
 
-    <ListItemButton href="/ADashboard" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <LeaderboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Indicadores" />
-    </ListItemButton>
+    <ListItemLink 
+      as={Link} 
+      to="/ADashboard" 
+      primary="Indicadores" 
+      icon={<LeaderboardIcon />}/>
 
-    <ListItemButton href="/AUsuarios" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <GroupIcon />
-      </ListItemIcon>
-      <ListItemText primary="Cuentas Usuarios" />
-    </ListItemButton>
+    <ListItemLink 
+      as={Link} 
+      to="/AAcuerdoComercial" 
+      primary="Acuerdo Comercial" 
+      icon={<LeaderboardIcon />}/>
 
-    <ListItemButton href="/Opciones" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <SettingsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Opciones" />
-    </ListItemButton>
+    <ListItemLink
+      as={Link} 
+      to="/AUsuarios" 
+      primary="Cuentas Usuarios" 
+      icon={<GroupIcon />}/>
 
-    <ListItemButton onClick={() => {
-          localStorage.removeItem('user');
+    <ListItemLink 
+      as={Link}
+      to="/Opciones" 
+      primary="Opciones" 
+      icon={<SettingsIcon />}/>
+
+      <ListItemLink 
+      as={Link}
+      to="/Historial" 
+      primary="Historial de cambios" 
+      icon={<HistoryIcon />}/>
+    
+    <ListItemLink
+      as={Link}
+      onClick={() => {
+      localStorage.removeItem('user');
       }}
-     href="/" sx={{ py: 2, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
-      <ListItemIcon>
-          <PersonOffIcon />
-      </ListItemIcon>
-      <ListItemText primary="Cerrar Session"/>
-      
-    </ListItemButton>
+      to="/" 
+      primary="Cerrar Sesión" 
+      icon={<PersonOffIcon />}/>
+
     </List>
-    <img style={{paddingLeft: 90 }} src={ LogoGpi2 } className="imagenLogoGrande"/>
+    <Typography variant="h5" color="black" style={{paddingLeft: 110 }}> GPI Lab © </Typography>
     <List sx={{ py: 30, minHeight: 32, color: 'rgba(255,255,255,.8)' }} >
     </List>
           </FireNav>

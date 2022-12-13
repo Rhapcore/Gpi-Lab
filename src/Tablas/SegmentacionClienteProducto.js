@@ -11,29 +11,11 @@ import { grey, lime, red } from '@mui/material/colors';
 import { BASE_URL } from '../misc/consts';
 
 
-// CSV
-/*
-const csv = require("csv-parser")
-const fs = require ("fs")
-const results = [];
-
-fs.createReadStream("db_transferviwe.csv")
- .pipe(csv({}))
- .on("data", (data) => results.pucsh(data))
- .on("end", () => {
-    console.log(results)
- });
-*/
-// chart options
-
-
 // ==============================|| SALES COLUMN CHART ||============================== //
 
-const SegmentacionClienteproducto = () => {
+const SegmentacionClienteproducto = ({rem3QDEEM,retonQDEEM,result}) => {
     const theme = useTheme();
 
-    const [userList, setUserList] = useState([])
-    const [result, setResult] = useState([])
     const [series,setSeries] = useState([{}]);
     const { primary, secondary } = theme.palette.text;
     const line = theme.palette.divider;
@@ -41,52 +23,16 @@ const SegmentacionClienteproducto = () => {
     const primaryMain = grey[700];
     const successDark = red[1000];
 
-    useEffect( () => { 
-        const getUsers = async () => {
-          const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
-          setUserList(data)
-          const objList = {};
-          data.forEach((Empresa) => {
-          if (!objList[Empresa.Empresa]) objList[Empresa.Empresa] = { 
-            ... Empresa,
-            VolumenTon: 0,
-            Masa: 0,
-            cantidad: 0,
-          };
-          objList[Empresa.Empresa].cantidad += 0 ;
-          objList[Empresa.Empresa].VolumenTon += Empresa.VolumenTon ;
-          objList[Empresa.Empresa].Masa += Empresa.Masa;
-          });
-          const result = Object.keys(objList).map((key) => objList[key]);
-          setResult(result)
-        }
-        getUsers();
-      }, []);
-
-
-
         useEffect( () => { 
-
-            const m3 = result.map((i) => i.Masa);
-            const rem3 = result.map((i) => i.Masa);
-            const reton = result.map((i) => i.VolumenTon);
-    
-            let totalreton = reton.reduce(
-                (acc, r) => Number.parseInt(r) + acc, -reton[0]);
-                totalreton += Number.parseInt(reton);
-            let M3 = m3.reduce(
-                (acc, r) => Number.parseInt(r) + acc, -reton[0]);
-                M3 += Number.parseInt(m3);
-    
             setSeries([
                     {
                     name: 'Suma de TON ACUM',
-                    data: reton,
+                    data: retonQDEEM,
                     },{
                     name: 'Suma de VOLUM ACUM',
-                    data: rem3,
+                    data: rem3QDEEM,
                     }]) }, 
-            [userList]);
+            [result]);
     
 
 const columnChartOptions = {

@@ -5,8 +5,6 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import axios from "axios";
 import Alertas from "../Alertas/Alertas";
-import MenuItem from '@mui/material/MenuItem';
-import { validateRUT } from 'validar-rut';
 import { BASE_URL } from "../misc/consts";
 
 const style = {
@@ -21,12 +19,6 @@ const style = {
     p: 4,
 }
 
-const Cargo = [
-    {value: 'Cliente',label: 'Cliente'},
-    {value: 'Operador',label: 'Operador'},
-    {value: 'Administrador',label: 'Administrador'},
-    {value: 'No habilitado',label: 'No habilitado'},
-];
 
 const EditarAcuerdoComercial = ({user ,open, setOpen }) => {
 

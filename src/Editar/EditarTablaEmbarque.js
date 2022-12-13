@@ -44,7 +44,7 @@ const EditarTablaEmbarque = ({user ,open, setOpen }) => {
                     sentBody.Id = user.Id;
                     
 
-              const {data} = await axios.post(`${BASE_URL}/EditarCliente`, sentBody);
+            const {data} = await axios.post(`${BASE_URL}/EditarCliente`, sentBody);
             handleClose()
             getUsers()
             } catch (response) {

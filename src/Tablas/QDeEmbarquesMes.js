@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 // @mui
 import { Box, Card, CardHeader } from '@mui/material';
-import { Grid, MenuItem, TextField } from '@mui/material';
+import { Grid} from '@mui/material';
 import { lime } from '@mui/material/colors';
 import { BASE_URL } from "../misc/consts";
 
@@ -15,26 +15,9 @@ QDeEmbarquesmes.propTypes = {
   subheader: PropTypes.string,
 };
 
-const status = [
-  {
-      value: 'Dia',
-      label: 'Dia'
-  },
-  {
-      value: 'Semana',
-      label: 'Semana'
-  },
-  {
-      value: 'Mes',
-      label: 'Mes'
-  }
-];
-
 function QDeEmbarquesmes({ title, subheader,Empresa,Embarque, ...other}) {
 
-  const [value, setValue] = useState('Dia');
-  const [userList, setUserList] = useState([])
-  const [result, setResult] = useState([])
+  const [setUserList] = useState([])
 
   useEffect( () => { 
     const getUsers = async () => {

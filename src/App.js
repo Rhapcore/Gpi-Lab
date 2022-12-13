@@ -15,6 +15,7 @@ import DashboardSegundaOperador from "./Paginas/PaginasParaOperador/DashboardSeg
 import DashboardSegundaCliente from "./Paginas/PaginasParaCliente/DashboardSegundaOperador";
 import GuardedCliente from "./middleware/guardedCliente";
 import AAcuerdoComercial from "./Paginas/AcuerdoComercial";
+import HistorialFront from "./Paginas/HistorialFront";
 
 function App() {
   return (
@@ -24,19 +25,21 @@ function App() {
           {/*=============== ADMINISTRADOR ===============*/}
 
             <Route path='/ADashboard' element={
-                <GuardedAdmin><DashboardFront /></GuardedAdmin>       } />
+                <GuardedAdmin><DashboardFront /></GuardedAdmin>        } />
             <Route path='/AAcuerdoComercial' element={
-                <GuardedAdmin><AAcuerdoComercial/></GuardedAdmin>       } />
+                <GuardedAdmin><AAcuerdoComercial/></GuardedAdmin>      } />
             <Route path='/ADashboard2da' element={
-                <GuardedAdmin><DashboardSegunda /></GuardedAdmin> } />
+                <GuardedAdmin><DashboardSegunda /></GuardedAdmin>      } />
             <Route path='/AUsuarios' element={
-                <GuardedAdmin><UsuarioFront /></GuardedAdmin>         } />
+                <GuardedAdmin><UsuarioFront /></GuardedAdmin>          } />
             <Route path='/Usuarios/Agregar' element={
                 <GuardedAdmin><RegisterFront /></GuardedAdmin>         } />
             <Route path='/ATablacliente' element={
-                <GuardedAdmin><Tablacliente /></GuardedAdmin>         } />
-             <Route path='/Opciones' element={
-                <GuardedAdmin><SettingsFront /></GuardedAdmin>        } />
+                <GuardedAdmin><Tablacliente /></GuardedAdmin>          } />
+            <Route path='/Opciones' element={
+                <GuardedAdmin><SettingsFront /></GuardedAdmin>         } />
+            <Route path='/Historial' element={
+                <GuardedAdmin><HistorialFront /></GuardedAdmin>         } />
 
           {/*=============== OPERADOR ===============*/}
 

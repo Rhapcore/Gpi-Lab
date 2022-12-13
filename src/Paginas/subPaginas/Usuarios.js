@@ -3,9 +3,17 @@ import { Button, Grid,Typography, Paper, createTheme} from '@mui/material';
 // tablas
 import MainCard from "../../Tablas/MainCard";
 import Tablausuarios from '../../Tablas/TablaUsuarios';
+import { useNavigate } from 'react-router-dom';
 // paginas
 
 const Usuarios = () => {
+    
+    const navigate = useNavigate();
+
+    const Agregar = async () => {
+        navigate("/Usuarios/Agregar")
+     }
+
     return(
         <div>
                <Grid>
@@ -25,7 +33,7 @@ const Usuarios = () => {
                         <Grid item xs={8}></Grid>
                         <Grid item xs={4}>
                             <Button
-                            href='/Usuarios/Agregar'
+                            onClick={Agregar}
                             Disable elevation
                             variant="contained"
                             position="left" 

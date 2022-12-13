@@ -1,38 +1,3 @@
-/*
-import React from 'react';
-import Table from '@mui/material/Table';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-
-const Tablacliente = () => {
-
-    return(
-
-        <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell/>
-            <TableCell align="left">EMBARQUE</TableCell>
-            <TableCell align="left">CLIENTE</TableCell> 
-            <TableCell align="left">FECHA DE INGRESO</TableCell>
-            <TableCell align="left">PRODUCTO</TableCell>
-            <TableCell align="left">TON</TableCell>
-            <TableCell>Acciones</TableCell>
-          </TableRow>
-        </TableHead>
-      </Table>
-    </TableContainer>
-  );
-}
-
-export default Tablacliente;
-*/
-
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
