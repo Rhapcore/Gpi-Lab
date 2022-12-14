@@ -54,7 +54,7 @@ const Tomm3 = ({cateTon, TonAcum, VolumenAcum, result}) => {
             },
             yaxis: {
                 title: {
-                    text: 'Masa'
+                    text: 'MasaTon'
                 }
             },
             fill: {
@@ -63,7 +63,7 @@ const Tomm3 = ({cateTon, TonAcum, VolumenAcum, result}) => {
             tooltip: {
                 y: {
                     formatter(val) {
-                        return `${val} Masa`;
+                        return `${val} MasaTon`;
                     }
                 }
             },

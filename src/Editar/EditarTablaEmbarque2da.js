@@ -33,10 +33,6 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
         })
     }
 
-    const getUsers = async () => {
-        const {data} = await axios.get(`${BASE_URL}/TransferView`)
-      }
-
     useEffect(() => {
         const onEdit = async () => {
             try {
@@ -46,7 +42,6 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
 
               const {data} = await axios.post(`${BASE_URL}/EditarCliente`, sentBody);
             handleClose()
-            getUsers()
             } catch (response) {
                 setMensaje({
                     ident: new Date().getTime(),
@@ -58,7 +53,7 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
         onEdit();
     }, [sendData]);
 
-    useEffect( () => { getUsers() }, []);
+    useEffect( () => {}, []);
 
     return (
         <div>

@@ -19,11 +19,11 @@ Hora termino entrega  13:35:33
 --------------------------------------------------------------------------------
 V. bruto entrega m3           .0
 V. Neto entrega m3            .0
-Masa entrega ton              .0       
+MasaTon entrega ton              .0       
 
 Acumulado Bruto m3         767.9
 Acumulado Neto m3          728.3
-Masa Acumulada ton         357.1
+MasaTon Acumulada ton         357.1
 --------------------------------------------------------------------------------
 Promedios de entrega  :
 Temperatura Deg.C          .00

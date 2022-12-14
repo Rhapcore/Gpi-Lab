@@ -46,7 +46,7 @@ const TablaHistorial = () => {
 useEffect( () => { 
   const getUsers = async () => {
     const {data} = await axios.get(`${BASE_URL}/TablaHistorial`)
-    const fecha = !search ? data : data.filter((dato)=> dato.FechaDeTermino >= search && dato.FechaDeTermino <= searchFIN)
+    const fecha = !search ? data : data.filter((dato)=> dato.FechaTerminoEntrega >= search && dato.FechaTerminoEntrega <= searchFIN)
     const BUSNombre = !Nombre ? fecha : fecha.filter((dato)=> dato.Nombre.toLowerCase().includes(Nombre.toLocaleLowerCase()))
     const BUSRut = !Rut ? BUSNombre : BUSNombre.filter((dato)=> dato.Rut.toLowerCase().includes(Rut.toLocaleLowerCase()))
     const BUSModulo = !Modulo ? BUSRut : BUSRut.filter((dato)=> dato.Modulo.toLowerCase().includes(Modulo.toLocaleLowerCase()))

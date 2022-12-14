@@ -25,6 +25,10 @@ import ReactToPrint from 'react-to-print';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import moment from 'moment';
 
+import { styled } from '@mui/material/styles';
+// import XLSX from "xlsx";
+import * as XLSX from 'xlsx';
+
 
 const TableAxios = () => {
 //1 - configuramos Los hooks
@@ -41,8 +45,13 @@ const [ Medidorr, setMedidorr] = useState("");
 const [ BuscadorProducto, setBuscadorProducto] = useState("");
 const [ Producto, setProducto] = useState([]);
 
-
-
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  maxWidth: "auto",
+  color: theme.palette.text.primary,
+}));
 const searcherINI = (e) => {
   const FechaModi = moment(e.target.value).format('YYYY/MM/DD');
   setSearch(FechaModi)
@@ -63,8 +72,6 @@ const FilFolio = (e) => {
   setBuscadorFolio(e.target.value)   
 }
 
-
-
 class App extends Component{
     constructor (props) {
         super (props);
@@ -73,7 +80,6 @@ class App extends Component{
             fileContent: ""
         };
     }
-
 
 handleFileChange = e => {
     const file = e.target.files[0];
@@ -88,7 +94,6 @@ handleFileChange = e => {
     }
 }
 }
-
 
 const [filterModel, setFilterModel] = React.useState({
     items: [
@@ -110,10 +115,12 @@ function QuickSearchToolbar() {
   }
 
 
+
+
 function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <Grid xs={0.1}>
+        <Grid xs={0}>
         </Grid>
         <Grid xs={7.7}>
         <QuickSearchToolbar /> 
@@ -134,55 +141,23 @@ function CustomToolbar() {
         </Grid>
         <Grid xs="auto">
         <Button 
-          sx={{height: 40, width: 180 }}
+          sx={{height: 40, width: 200 }}
           variant="outlined" 
-          startIcon={<PictureAsPdfIcon/>}>
-          Excel Pendiente
+          startIcon={<PictureAsPdfIcon/>}
+          onClick={handleOnExport}
+          >
+          Exportar excel
           </Button>
         </Grid>
       </GridToolbarContainer>
     );
   }
 
-/*
-  function CustomToolbar1() {
-    return (
-      <GridToolbarContainer>
-        <Grid xs={3}>
-        </Grid>
-        <Grid xs={2}>
-        </Grid>
-        <Grid xs={2}>
-        </Grid>
-        <Grid xs={1}>
-        </Grid>
-        <Grid xs={1}>
-        </Grid>
-        <Grid xs={2}>
-        </Grid>
-        <Grid xs={1}>
-        <ReactToPrint
-                        trigger={() => ( 
-                        <Button 
-                        sx={{height: 40, width: 180 }}
-                        variant="outlined" 
-                        startIcon={<PictureAsPdfIcon/>}>
-                          Exportar PDF
-                        </Button>
-                        )}
-                        content={() => componentRef.current}
-                        severity="success"
-                    />
-                    </Grid>
-      </GridToolbarContainer>
-    );
-  }
-*/
 useEffect( ()=>{
     const getData = async () => {  
             await axios.get(`${BASE_URL}/MostrarCliente`).then((response) => {
             const data = response.data    
-            const fecha = !search ? data : data.filter((dato)=> dato.FechaDeTermino >= search && dato.FechaDeTermino <= searchFIN);
+            const fecha = !search ? data : data.filter((dato)=> dato.FechaTerminoEntrega >= search && dato.FechaTerminoEntrega <= searchFIN);
             const BUSEmpresas = !BuscadorEmpresa ? fecha : fecha.filter((dato)=> dato.Empresa.toLowerCase().includes(BuscadorEmpresa.toLocaleLowerCase()));
             const BUSProducto = !BuscadorProducto ? BUSEmpresas : BUSEmpresas.filter((dato)=> dato.Producto.toLowerCase().includes(BuscadorProducto.toLocaleLowerCase()));
             const BUsFolio = !BuscadorFolio ? BUSProducto : BUSProducto.filter((dato)=> dato.Folio.includes(BuscadorFolio.toLocaleLowerCase()));
@@ -194,9 +169,9 @@ useEffect( ()=>{
                 cantidad: 0,
             };
             objListQDEEM[Empresa.Empresa].cantidad += 1 ;
-            objListQDEEM[Empresa.Empresa].VolumenTon += Empresa.VolumenTon ;
+            objListQDEEM[Empresa.Empresa].VolumenM3 += Empresa.VolumenM3 ;
             objListQDEEM[Empresa.Empresa].Producto += Empresa.Producto + 1 ;
-            objListQDEEM[Empresa.Empresa].Masa += Empresa.Masa;
+            objListQDEEM[Empresa.Empresa].MasaTon += Empresa.MasaTon;
             });
             const resultQDEEM = Object.keys(objListQDEEM).map((key) => objListQDEEM[key]);
             const Empresa = ([...resultQDEEM.map(i => i.Empresa)]);
@@ -228,18 +203,11 @@ useEffect( ()=>{
             });
             const resultProducto = Object.keys(objProducto).map((key) => objProducto[key]);
             const Productoo = ([...resultProducto.map(i => i.Producto)]);
-            setProducto(Productoo)
-
-
-
-            
-
-            
+            setProducto(Productoo) 
         })
     }
     getData()
 }, [search,searchFIN,BuscadorFolio,BuscadorEmpresa,BuscadorProducto])
-
 
 
 
@@ -248,25 +216,25 @@ const Embar = products.map((i) => i.Embarque);
     (acc, r) => Number.parseInt(r) + acc, -Embar[0]);
     TotalEmbarque += Number.parseInt(Embar);
 
-const Masaa = products.map((i) => i.Masa);
-  let TotalMasaa = Masaa.reduce(
-    (acc, r) => Number.parseInt(r) + acc, -Masaa[0]);
-    TotalMasaa += Number.parseInt(Masaa);
+const MasaTona = products.map((i) => i.MasaTon);
+  let TotalMasaTona = MasaTona.reduce(
+    (acc, r) => Number.parseInt(r) + acc, -MasaTona[0]);
+    TotalMasaTona += Number.parseInt(MasaTona);
 
-const MasaTON = products.map((i) => i.VolumenTon);
-  let TotalMasaTON = MasaTON.reduce(
-    (acc, r) => Number.parseInt(r) + acc, -MasaTON[0]);
-    TotalMasaTON += Number.parseInt(MasaTON);
+const MasaTon = products.map((i) => i.VolumenM3);
+  let TotalMasaTon = MasaTon.reduce(
+    (acc, r) => Number.parseInt(r) + acc, -MasaTon[0]);
+    TotalMasaTon += Number.parseInt(MasaTon);
   
   const columns = [
     {
-      field: 'FechaDeTermino',
+      field: 'FechaTerminoEntrega',
       headerName: 'Fecha termino entrega',
       type: 'date',
       width: 200,
     },
     {
-      field: 'Folio',
+      field: 'EmbarqueNumero',
       headerName: 'Embarque número',
       width: 200,
     },
@@ -289,12 +257,12 @@ const MasaTON = products.map((i) => i.VolumenTon);
       editable: true,
     },
     {
-      field: 'Masa',
+      field: 'MasaTon',
       headerName: 'Masa TON',
       width: 150,
     },
     {
-      field: 'VolumenTon',
+      field: 'VolumenM3',
       headerName: 'Volumen M3',
       width: 150,
     },
@@ -326,42 +294,46 @@ const MasaTON = products.map((i) => i.VolumenTon);
     {
       field: 'Empresa',
       headerName: 'Empresa',
-      width: 200,
+      width: 150,
     },
     {
       field: 'Medidor',
       headerName: 'Medidor',
-      width: 200,
+      width: 150,
       editable: true,
     },
     {
       field: 'Producto',
       headerName: 'Producto',
-      width: 200,
+      width: 150,
     },
     {
         field: 'Embarque',
         headerName: 'Embarque',
-        width: 200,
+        width: 100,
       },
     {
-      field: 'Masa',
+      field: 'MasaTon',
       headerName: 'Masa TON',
-      width: 150,
+      width: 110,
     },
     {
-      field: 'VolumenTon',
+      field: 'VolumenM3',
       headerName: 'Volumen M3',
-      width: 150,
+      width: 100,
     },
   ];
 
-  //<EditarTablaEmbarque/>
-//4 - renderizamos la datatable
+  const handleOnExport = () => {
+    var wb = XLSX.utils.book_new(),
+    ws = XLSX.utils.json_to_sheet(products);
+    XLSX.utils.book_append_sheet(wb, ws, "Listado de Reportes");
+    XLSX.writeFile(wb, "Listado de Reportes.xlsx");
+  }
+  
 
         return (
             <>
-            
             <Grid rowSpacing={4.5} columnSpacing={2.75}>
             <Grid container rowSpacing={4.5} columnSpacing={2.75}>             
                 <Grid item xs={12}></Grid>
@@ -399,8 +371,8 @@ const MasaTON = products.map((i) => i.VolumenTon);
                             <Paper elevation={24}>
                               <TextField
                                     value={BuscadorFolio}
-                                    label="Embarque"
-                                    placeholder="Embarque"
+                                    label="Buscador Embarque"
+                                    placeholder="Buscador Embarque"
                                     sx={{ width: 220 }}
                                     InputLabelProps={{
                                     shrink: true,
@@ -429,8 +401,8 @@ const MasaTON = products.map((i) => i.VolumenTon);
                                 <TextField
                                     value={BuscadorProducto}
                                     type="text" 
-                                    label="Nombre Producto"
-                                    placeholder="Nombre Producto***"
+                                    label="Buscador Producto"
+                                    placeholder="Buscador Producto"
                                     sx={{ width: 220 }}
                                     InputLabelProps={{
                                     shrink: true,
@@ -439,31 +411,50 @@ const MasaTON = products.map((i) => i.VolumenTon);
                                 />
                                 </Paper>
                             </Grid>
+                            <Grid item >
+                                <Paper elevation={24}>
+                                  <Button
+                                  >
+                                    Limpiar Filtro
+                                  </Button>
+                                </Paper>
+                            </Grid>
                             <Grid xs={0.7}></Grid>
                             <Grid sx={{ mt: 2 }}> 
                             </Grid>
                     <Grid xs={2}></Grid>
                 </Grid>
             </Grid>
-            <div  ref={componentRef}>
-            <Grid item xs={12}>
+            <div ref={componentRef} style={{width: "100%"}}> 
+            <Grid  item xs={12}>
                 <Grid container>
                     <Grid item lg={12} md={8} sm={8} xs={12} sx={{ mt: 5 }}>
                         <Paper elevation={24}>
-                            <Typography align="center" variant="h3">Resumen de Busqueda</Typography>
+                        <StyledPaper
+                          >
+                            <Typography align="center" variant="h3">Resumen de Búsqueda</Typography>
+                            <Grid container item >
+                            <Grid xs={10.5}>
+                            </Grid>
+                            <Grid xs="auto">
+                            </Grid>
+                            <Grid xs="auto">
                             <ReactToPrint
-                              
                               trigger={() => ( 
                                 <Button 
-                                sx={{height: 40, width: 180, mt: -10, left: 1300}}
+                                sx={{height: 40, width: 180, mt: -10}}
                                 variant="outlined" 
                                 startIcon={<PictureAsPdfIcon/>}>
                                   Exportar PDF
                                 </Button>
                               )}
                               content={() => componentRef.current}
+                              documenTitle="ResumenDeBúsqueda"
+                              pageStyle="print"
                               severity="success"
                               />
+                              </Grid>
+                              </Grid>
                             <p/>
                             <Box sx={{ height: 635, width: '100%' }}>
                             <DataGrid
@@ -477,35 +468,31 @@ const MasaTON = products.map((i) => i.VolumenTon);
                                     experimentalFeatures={{ newEditingApi: true }}
                                     components={{
                                         LoadingOverlay: LinearProgress,
-                                        }}loading
+                                        }}
                                 />
-                                
+                            <Box sx={{ mt: -8, height: 55, width: '100%' }}>
+                            <TableCell sx={{height: 70, width: 110 }} variant="button" display="block" align="left">Empresa</TableCell>
+                            <TableCell sx={{height: 70, width: 120 }} align="left">Medidor</TableCell>
+                            <TableCell sx={{height: 70, width: 120 }} align="left">Producto</TableCell>
+                            <TableCell sx={{height: 70, width: 40 }} align="left">Embarque</TableCell>
+                            <TableCell sx={{height: 70, width: 80 }} align="left">Suma Masa</TableCell>
+                            <TableCell sx={{height: 70, width: 100 }} align="left">Suma Volumen</TableCell>
                             </Box>
-                            <Box sx={{ mt:-8, height: 55, width: '100%' }}>
-                            <TableCell sx={{height: 70, width: 160 }} variant="button" display="block" align="left">Empresa</TableCell>
-                            <TableCell sx={{height: 70, width: 170 }} align="left">Medidor</TableCell>
-                            <TableCell sx={{height: 70, width: 165 }} align="left">Producto</TableCell>
-                            <TableCell sx={{height: 70, width: 170 }} align="left">Embarque</TableCell>
-                            <TableCell sx={{height: 70, width: 120 }} align="left">Suma Masa</TableCell>
-                            <TableCell sx={{height: 70, width: 150 }} align="left">Suma Volumen</TableCell>
+                            <Box sx={{ mt:-4, height: 44, width: '100%' }}>
+                            <TableCell sx={{height: 70, width: 110 }} align="left">{Empresa.length}</TableCell>
+                            <TableCell sx={{height: 70, width: 120 }} align="left">{Medidorr.length}</TableCell>
+                            <TableCell sx={{height: 70, width: 120 }} align="left">{Producto.length}</TableCell>
+                            <TableCell sx={{height: 70, width: 65 }} align="left">{TotalEmbarque}</TableCell>
+                            <TableCell sx={{height: 70, width: 80 }} align="left">{TotalMasaTon}</TableCell>
+                            <TableCell sx={{height: 70, width: 100 }} align="left">{TotalMasaTon}</TableCell>
                             </Box>
-                            <Box sx={{ mt:-4, height: 55, width: '100%' }}>
-                            <TableCell sx={{height: 70, width: 160 }} align="left">{Empresa.length}</TableCell>
-                            <TableCell sx={{height: 70, width: 170 }} align="left">{Medidorr.length}</TableCell>
-                            <TableCell sx={{height: 70, width: 165 }} align="left">{Producto.length}</TableCell>
-                            <TableCell sx={{height: 70, width: 170 }} align="left">{TotalEmbarque}</TableCell>
-                            <TableCell sx={{height: 70, width: 120 }} align="left">{TotalMasaa}</TableCell>
-                            <TableCell sx={{height: 70, width: 150 }} align="left">{TotalMasaTON}</TableCell>
                             </Box>
+                            </StyledPaper>
                         </Paper>
                     </Grid>
                 </Grid>
             </Grid>
-            
-          </div>
-            
-        
-        <Grid item sx={{ mt: 10 }}></Grid>
+            </div>
         <Grid xs={12} columnSpacing={2.75} >
 
             <Grid item xs={0.1}></Grid>
@@ -584,65 +571,4 @@ const MasaTON = products.map((i) => i.VolumenTon);
 }
 
 export default TableAxios;
-
-
-/*
-<Grid rowSpacing={4.5} columnSpacing={2.75}>
-        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-              <Grid item xs={3}></Grid>
-                <Grid item xs={6}>
-                    <Paper elevation={24}>
-                    <AnalyticEcommerce center count="Resumen de la Tabla" />
-                    </Paper>
-                </Grid>
-              <Grid xs={3}></Grid>
-            </Grid>
-        </Grid>
-       
-
-        <Grid rowSpacing={4.5} columnSpacing={2.75}>
-        <Grid container rowSpacing={4.5} columnSpacing={2.75}>             
-            <Grid item xs={12}></Grid>
-              <Grid xs={1.9}></Grid>
-                <Grid item xs={4}>
-                    <Paper elevation={24}>
-                        <AnalyticEcommerce xs={12} sm={6} md={4} lg={3} cliente="Fecha de Inicio =" extra={search} />
-                    </Paper>
-                </Grid>
-                <Grid item xs={4} >
-                    <Paper elevation={24}>
-                        <AnalyticEcommerce cliente="Fecha de Termino = " extra={searchFIN} />
-                    </Paper>
-                </Grid>
-              <Grid xs={2}></Grid>
-            </Grid>
-        </Grid>
-
-
- <Grid item xs={2} sm={6} md={4} lg={2.7}>
-                    <Paper elevation={24}>
-                        <AnalyticEcommerce title="Medidor Numero" count="Lipigas" cliente="Cliente =" extra="5" />
-                    </Paper>
-                </Grid>
-                <Grid item xs={2} sm={6} md={4} lg={2.7}>
-                    <Paper elevation={24}>
-                        <AnalyticEcommerce title="Nombre Cliente" count={Empresa} cliente="Producto =" extra={Producto} />
-                    </Paper>
-                </Grid>
-                <Grid item xs={2} sm={6} md={4} lg={2.7}>
-
-                    <Paper elevation={24}>
-                        <AnalyticEcommerce title="Embarques" count={TotalEmbarque}  cliente="T Masa =" extra={TotalMasaa}   />
-                    </Paper>
-                </Grid>
-                <Grid item xs={2} sm={6} md={4} lg={2.7}>
-                    <Paper elevation={24}>
-                        <AnalyticEcommerce title="Medidos" count="Lipigas"  cliente="T Volumen =" extra={TotalMasaTON}   />
-                    </Paper>
-                </Grid>   
-
-                */
-
-
-
 

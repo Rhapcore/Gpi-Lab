@@ -60,7 +60,7 @@ const columnChartOptions = {
     },
     yaxis: {
         title: {
-            text: 'Masa'
+            text: 'MasaTon'
         }
     },
     fill: {
@@ -69,7 +69,7 @@ const columnChartOptions = {
     tooltip: {
         y: {
             formatter(val) {
-                return `${val} Masa`;
+                return `${val} MasaTon`;
             }
         }
     },

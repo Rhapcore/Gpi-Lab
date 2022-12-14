@@ -71,7 +71,7 @@ const Dashboard = () => {
         console.log("users",users)
         
      const testeo = !search ? users : users.filter((dato)=> dato.Empresa.toLowerCase().includes(search.toLocaleLowerCase()))
-     const fecha = !search ? users : users.filter((dato)=> dato.FechaDeTermino.toLowerCase().includes(search.toLocaleLowerCase()))
+     const fecha = !search ? users : users.filter((dato)=> dato.FechaTerminoEntrega.toLowerCase().includes(search.toLocaleLowerCase()))
 
     }
 */
@@ -91,35 +91,35 @@ const searcherINI = (e) => {
 
 
     //################# Configuracion de Tomm3 #################
-    // FechaDeTermino
+    // FechaTerminoEntrega
 
     // let filtrar = account.filter(n => n.date >  && n.date <)
 
     useEffect( () => { 
         const getUsers = async () => {
             const {data} = await axios.get(`${BASE_URL}/MostrarCliente`)
-            const fecha = !search ? data : data.filter((dato)=> dato.FechaDeTermino >= search && dato.FechaDeTermino <= searchFIN)
+            const fecha = !search ? data : data.filter((dato)=> dato.FechaTerminoEntrega >= search && dato.FechaTerminoEntrega <= searchFIN)
             setUserList(fecha)
             const objListTomm3 = {};
-            fecha.forEach((FechaDeTermino) => {
-            if (!objListTomm3[FechaDeTermino.FechaDeTermino]) objListTomm3[FechaDeTermino.FechaDeTermino] = {
-                ...FechaDeTermino,
-                VolumenTon: 0,
-                Masa: 0,
+            fecha.forEach((FechaTerminoEntrega) => {
+            if (!objListTomm3[FechaTerminoEntrega.FechaTerminoEntrega]) objListTomm3[FechaTerminoEntrega.FechaTerminoEntrega] = {
+                ...FechaTerminoEntrega,
+                VolumenM3: 0,
+                MasaTonTon: 0,
                 cantidad: 0,
             };
-            objListTomm3[FechaDeTermino.FechaDeTermino].cantidad += 0 ;
-            objListTomm3[FechaDeTermino.FechaDeTermino].VolumenTon += FechaDeTermino.VolumenTon ;
-            objListTomm3[FechaDeTermino.FechaDeTermino].Masa += FechaDeTermino.Masa;
+            objListTomm3[FechaTerminoEntrega.FechaTerminoEntrega].cantidad += 0 ;
+            objListTomm3[FechaTerminoEntrega.FechaTerminoEntrega].VolumenM3 += FechaTerminoEntrega.VolumenM3 ;
+            objListTomm3[FechaTerminoEntrega.FechaTerminoEntrega].MasaTon += FechaTerminoEntrega.MasaTon;
             });
 
             const resultTomm3 = Object.keys(objListTomm3).map((key) => objListTomm3[key]);
             setResultTomm3(resultTomm3)
-            const Fecha = ([...resultTomm3.map(i => i.FechaDeTermino)]);
+            const Fecha = ([...resultTomm3.map(i => i.FechaTerminoEntrega)]);
             setCateton(Fecha)
-            const Volumen = ([...resultTomm3.map((i) => i.Masa)]);
+            const Volumen = ([...resultTomm3.map((i) => i.MasaTon)]);
             setVolumenAcum(Volumen)
-            const Ton = ([...resultTomm3.map((i) => i.VolumenTon)]);
+            const Ton = ([...resultTomm3.map((i) => i.VolumenM3)]);
             setTonAcum(Ton)
 
             //################# Configuracion de TablaClienprod ################# 
@@ -129,14 +129,14 @@ const searcherINI = (e) => {
             if (!objListTablaCli[Producto.Producto]) objListTablaCli[Producto.Producto] = { 
                 ...Producto,
                 Embarque: 0,
-                VolumenTon: 0,
-                Masa: 0,
+                VolumenM3: 0,
+                MasaTon: 0,
                 cantidad: 0,
             };
             objListTablaCli[Producto.Producto].cantidad += 0 ;
             objListTablaCli[Producto.Producto].Embarque += Producto.Embarque;
-            objListTablaCli[Producto.Producto].VolumenTon += Producto.VolumenTon ;
-            objListTablaCli[Producto.Producto].Masa += Producto.Masa;
+            objListTablaCli[Producto.Producto].VolumenM3 += Producto.VolumenM3 ;
+            objListTablaCli[Producto.Producto].MasaTon += Producto.MasaTon;
             });
             const resultTablaCli = Object.keys(objListTablaCli).map((key) => objListTablaCli[key]);
                 setResultTablaCli(resultTablaCli);
@@ -152,8 +152,8 @@ const searcherINI = (e) => {
             };
             objListQDEEM[Empresa.Empresa].cantidad += 0 ;
             objListQDEEM[Empresa.Empresa].Embarque += Empresa.Embarque;
-            objListQDEEM[Empresa.Empresa].VolumenTon += Empresa.VolumenTon ;
-            objListQDEEM[Empresa.Empresa].Masa += Empresa.Masa;
+            objListQDEEM[Empresa.Empresa].VolumenM3 += Empresa.VolumenM3 ;
+            objListQDEEM[Empresa.Empresa].MasaTon += Empresa.MasaTon;
             });
             const resultQDEEM = Object.keys(objListQDEEM).map((key) => objListQDEEM[key]);
             setResultQDEEM(resultQDEEM)
@@ -169,8 +169,8 @@ const searcherINI = (e) => {
                 if (!objListTipoPro[Producto.Producto]) objListTipoPro[Producto.Producto] = { ...Producto, cantidad: 0};
                 objListTipoPro[Producto.Producto].cantidad += 0 ;
                 objListTipoPro[Producto.Producto].Embarque += Producto.Embarque;
-                objListTipoPro[Producto.Producto].VolumenTon += Producto.VolumenTon;
-                objListTipoPro[Producto.Producto].Masa += Producto.Masa;
+                objListTipoPro[Producto.Producto].VolumenM3 += Producto.VolumenM3;
+                objListTipoPro[Producto.Producto].MasaTon += Producto.MasaTon;
             });
             const resultTipoPro = Object.keys(objListTipoPro).map((key) => objListTipoPro[key]);
             setResultTipoPro(resultTipoPro)
@@ -181,8 +181,8 @@ const searcherINI = (e) => {
     //################# Configuracion de TablaClienprod ################# 
  
     const EmbarTablaCli = userList.map((i) => i.Embarque);
-    const tonTablaCli = userList.map((i) => i.VolumenTon);
-    const m3TablaCli = userList.map((i) => i.Masa); 
+    const tonTablaCli = userList.map((i) => i.VolumenM3);
+    const m3TablaCli = userList.map((i) => i.MasaTon); 
   
     let TotalEmbarque = EmbarTablaCli.reduce(
         (acc, r) => Number.parseInt(r) + acc, -EmbarTablaCli[0]);
@@ -196,8 +196,8 @@ const searcherINI = (e) => {
         
     //################# Configuracion de QDeEmbarquesmes #################
 
-    const TonTon = userList.map((i) => i.VolumenTon);
-    const m3m3 = userList.map((i) => i.Masa);
+    const TonTon = userList.map((i) => i.VolumenM3);
+    const m3m3 = userList.map((i) => i.MasaTon);
 
     let M3M3 = m3m3.reduce(
         (acx, r) => Number.parseInt(r) + acx, -m3m3[0]);
@@ -212,11 +212,11 @@ const searcherINI = (e) => {
 
     //################# Configuracion de Tipo de Producto #################
 
-    const rem3TipoPro = resultTipoPro.map((i) => i.Masa);
-    const retonTipoPro = resultTipoPro.map((i) => i.VolumenTon);
+    const rem3TipoPro = resultTipoPro.map((i) => i.MasaTon);
+    const retonTipoPro = resultTipoPro.map((i) => i.VolumenM3);
 
-    const rem3QDEEM = resultQDEEM.map((i) => i.Masa);
-    const retonQDEEM = resultQDEEM.map((i) => i.VolumenTon);
+    const rem3QDEEM = resultQDEEM.map((i) => i.MasaTon);
+    const retonQDEEM = resultQDEEM.map((i) => i.VolumenM3);
 
     return(
         <>

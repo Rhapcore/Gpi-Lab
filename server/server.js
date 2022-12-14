@@ -79,9 +79,9 @@ app.post('/Guardar', (req, res) => {
 		res.status(500).send("Error al guardar el usuario");
 	  } else {
 		res.status(200).send({ status: 'success', message: 'Usuario creado' });
-      }
-    });
+  		}
   });
+});
 
 app.post('/Editar', (req, res) => {
 	const { Id, FristName, LastName, Rut, Cargo, password } = req.body
@@ -128,8 +128,8 @@ app.get("/MostrarCliente", (req,res) => {
 })
 
 app.post('/EditarCliente', (req, res) => {
-	const { Id, FechaDeTermino, Empresa, Producto, Masa, VolumenTon,Embarque } = req.body
-	db.all(`UPDATE TablaCliente SET FechaDeTermino = '${FechaDeTermino}',Empresa = '${Empresa}', Producto = '${Producto}', Masa = '${Masa}', VolumenTon = '${VolumenTon}', Embarque = '${Embarque}' WHERE Id = '${Id}'`,  (err, result) => {
+	const { Id, FechaTerminoEntrega, Empresa, Producto, MasaTon, VolumenM3,Embarque } = req.body
+	db.all(`UPDATE TablaCliente SET FechaTerminoEntrega = '${FechaTerminoEntrega}',Empresa = '${Empresa}', Producto = '${Producto}', MasaTon = '${MasaTon}', VolumenM3 = '${VolumenM3}', Embarque = '${Embarque}' WHERE Id = '${Id}'`,  (err, result) => {
 		if (err) {
 			res.status(500).send(err)
 		} else {
@@ -165,7 +165,7 @@ app.post('/GuardarHistorial', (req, res) => {
 	if (err) {
 		res.status(500).send("Error al guardar el Historial");
 	  	} else {
-		res.status(200).send({ status: 'success', message: 'Historial creado' });
+		res.status(200).send({ status: 'success', message: 'Historial creado'});
   		}
   	});
   });

@@ -56,7 +56,7 @@ const Tablacliente = () => {
               <StyledTableCell>F de termino</StyledTableCell>
               <StyledTableCell>Entrega</StyledTableCell>
               <StyledTableCell>Producto</StyledTableCell>
-              <StyledTableCell>Masa</StyledTableCell>
+              <StyledTableCell>MasaTon</StyledTableCell>
               <StyledTableCell>Volumen Neto (TON)</StyledTableCell>
               <StyledTableCell>Embarque</StyledTableCell>
               <StyledTableCell>Acciones</StyledTableCell>
@@ -66,12 +66,12 @@ const Tablacliente = () => {
           {userList.map((user, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
-                  {user.FechaDeTermino}
+                  {user.FechaTerminoEntrega}
                 </StyledTableCell>
                 <StyledTableCell>{user.Empresa}</StyledTableCell>
                 <StyledTableCell>{user.Producto}</StyledTableCell>
-                <StyledTableCell>{user.Masa}</StyledTableCell>
-                <StyledTableCell>{user.VolumenTon}</StyledTableCell>
+                <StyledTableCell>{user.MasaTon}</StyledTableCell>
+                <StyledTableCell>{user.VolumenM3}</StyledTableCell>
                 <StyledTableCell>{user.Embarque}</StyledTableCell>
                 <StyledTableCell>
                     <Fab color="primary" 
