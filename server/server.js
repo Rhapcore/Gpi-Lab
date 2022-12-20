@@ -111,7 +111,7 @@ app.post('/TransferViewEditar', (req, res) => {
 		if (err) {
 			res.status(500).send(err)
 		} else {
-			res.status(200).send({ "status": "success", "message": "Servidor Actualizado" })
+			res.status(200).send({ "status": "success", "message": "SersetOpenEditvidor Actualizado" })
 		}
 	})
 })
@@ -128,8 +128,8 @@ app.get("/MostrarCliente", (req,res) => {
 })
 
 app.post('/EditarCliente', (req, res) => {
-	const { Id, FechaTerminoEntrega, Empresa, Producto, MasaTon, VolumenM3,Embarque } = req.body
-	db.all(`UPDATE TablaCliente SET FechaTerminoEntrega = '${FechaTerminoEntrega}',Empresa = '${Empresa}', Producto = '${Producto}', MasaTon = '${MasaTon}', VolumenM3 = '${VolumenM3}', Embarque = '${Embarque}' WHERE Id = '${Id}'`,  (err, result) => {
+	const { id, FechaTerminoEntrega, EmbarqueNumero, Medidor, Empresa, Producto,MasaTon, VolumenM3, Embarque } = req.body
+	db.all(`UPDATE TablaCliente SET FechaTerminoEntrega = '${FechaTerminoEntrega}',EmbarqueNumero = '${EmbarqueNumero}', Medidor = '${Medidor}', Empresa = '${Empresa}', Producto = '${Producto}', MasaTon = '${MasaTon}', VolumenM3 = '${VolumenM3}', Embarque = '${Embarque}' WHERE Id = '${id}'`,  (err, result) => {
 		if (err) {
 			res.status(500).send(err)
 		} else {

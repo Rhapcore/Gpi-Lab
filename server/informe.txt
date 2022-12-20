@@ -6,7 +6,7 @@ Fecha: 22/11/22   Hora : 13:35:33                     Computer ID :    34140
 --------------------------------------------------------------------------------
 Medidor Numero           FT-01
 Embarque Numero            121
-Nombre entrega                                
+Empresa                                
 Numero de entrega            2
 Nombre Producto        PROPANO
 Tabla API             GPATP16M

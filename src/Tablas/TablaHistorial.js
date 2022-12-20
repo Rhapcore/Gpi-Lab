@@ -5,9 +5,12 @@ import { BASE_URL } from "../misc/consts";
 import { DataGrid,
   esES,
 } from '@mui/x-data-grid';
-import {Grid,Paper,TextField} from '@mui/material';
+import {Grid,Paper,TextField,Button} from '@mui/material';
 import Box from '@mui/material/Box';
 import moment from 'moment';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import * as XLSX from 'xlsx';
+
 
 
 const TablaHistorial = () => {
@@ -91,6 +94,13 @@ const resumen = [
   },
 ];
 
+const handleOnExport = () => {
+  var wb = XLSX.utils.book_new(),
+  ws = XLSX.utils.json_to_sheet(products);
+  XLSX.utils.book_append_sheet(wb, ws, "Listado Historial de Cambios");
+  XLSX.writeFile(wb, "Listado Historial de Cambios.xlsx");
+}
+
 
     return(
       <>
@@ -169,6 +179,19 @@ const resumen = [
                                     onChange={FilModulo}
                                 />
                                 </Paper>
+                                </Grid>
+                              <Grid item >
+                                <Paper elevation={24}>
+                                <Button 
+                                  sx={{height: 40, width: 200 }}
+                                  variant="outlined" 
+                                  startIcon={<PictureAsPdfIcon/>}
+                                  onClick={handleOnExport}
+                                  >
+                                  Exportar excel
+                                  </Button>
+                                </Paper>
+                                
                             </Grid>
                     <Grid xs={2}></Grid>
                 </Grid>

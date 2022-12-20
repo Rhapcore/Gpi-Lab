@@ -12,10 +12,12 @@ import GuardedOperador from "./middleware/guardedOperador";
 import GuardedAdmin from "./middleware/guardedAdmin";
 import DashboardFrontOperador from "./Paginas/PaginasParaOperador/DashboardFrontOperador";
 import DashboardSegundaOperador from "./Paginas/PaginasParaOperador/DashboardSegundaOperador";
-import DashboardSegundaCliente from "./Paginas/PaginasParaCliente/DashboardSegundaOperador";
+import DashboardSegundaCliente from "./Paginas/PaginasParaCliente/DashboardSegundaCliente";
 import GuardedCliente from "./middleware/guardedCliente";
 import AAcuerdoComercial from "./Paginas/AcuerdoComercial";
 import HistorialFront from "./Paginas/HistorialFront";
+import CAcuerdoComercialCliente from "./Paginas/PaginasParaCliente/AcuerdoComercial";
+import DashboardFrontCliente from "./Paginas/PaginasParaCliente/DashboardFrontCliente";
 
 function App() {
   return (
@@ -43,15 +45,19 @@ function App() {
 
           {/*=============== OPERADOR ===============*/}
 
-          <Route path='/ODashboard' element={
+            <Route path='/ODashboard' element={
                 <GuardedOperador><DashboardFrontOperador /></GuardedOperador> } />
-          <Route path='/ODashboard2da' element={
+            <Route path='/ODashboard2da' element={
                 <GuardedOperador><DashboardSegundaOperador /></GuardedOperador> } />
 
           {/*=============== CLIENTE ===============*/}
 
-          <Route path='/CDashboard2da' element={
+            <Route path='/CDashboard2da' element={
                 <GuardedCliente><DashboardSegundaCliente/></GuardedCliente>        } />
+            <Route path='/CDashboard' element={
+                <GuardedCliente><DashboardFrontCliente/></GuardedCliente>        } />
+            <Route path='/CAcuerdoComercial' element={
+                <GuardedCliente><CAcuerdoComercialCliente/></GuardedCliente>        } />
 
           {/*===============  ERROR ===============*/}
 

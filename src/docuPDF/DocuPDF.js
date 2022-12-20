@@ -4,7 +4,7 @@ import ReactToPrint from 'react-to-print';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 // imagen
-import LogoGpi from '../Imagenes/Logo-GPI.png';
+import InformeEjemplo from '../Imagenes/InformeEjemplo.png';
 import Image from "mui-image";
 
 const DocuPDF = () => {
@@ -48,7 +48,9 @@ const DocuPDF = () => {
                             <tr className="column2">
                                 <tr>ㅤㅤㅤ</tr>
                                 <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
-                                <Image duration={1000} height="80%" width="100%" src={LogoGpi}/>
+                                <h1> Ejemplo </h1>
+                                <Image duration={1000} height="80%" width="100%" src={InformeEjemplo}/>
+                                <h1> Ejemplo </h1>
                                 <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
                                 <tr>ㅤㅤㅤ</tr>
                                 <tr></tr>

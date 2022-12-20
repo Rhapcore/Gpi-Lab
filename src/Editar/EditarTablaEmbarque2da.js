@@ -19,8 +19,8 @@ const style = {
     p: 4,
 }
 
-const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
 
+const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
     const handleClose = () => setOpen(false);
     const [body, setBody] = useState({});
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
@@ -32,15 +32,14 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
             [name]: value
         })
     }
-
+    
     useEffect(() => {
         const onEdit = async () => {
             try {
                 const sentBody = { ...user, ...body};
-                    sentBody.Id = user.Id;
-                    
-
+                sentBody.id = user.id;
               const {data} = await axios.post(`${BASE_URL}/EditarCliente`, sentBody);
+              
             handleClose()
             } catch (response) {
                 setMensaje({
@@ -52,8 +51,6 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
         
         onEdit();
     }, [sendData]);
-
-    useEffect( () => {}, []);
 
     return (
         <div>
@@ -67,21 +64,22 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
             >
                 <Box sx={style }>
                     <Typography id="modal-modal-title" variant="h4" component="h4">
-                    Editar Tabla Embarque
+                        Editar Acuerdo Comercial
                     </Typography>
                     <i>ㅤㅤ</i>
                                 <div>
-                                        <TextField 
+                                <TextField 
                                         sx={{ m: 1 }}
-                                        label='Entrega' 
-                                        name='Entrega'
+                                        label='Empresa' 
+                                        name='Empresa' 
                                         value={body.Empresa}
                                         defaultValue={user.Empresa}
                                         onChange={onChange}
                                         />
+                                        <p> </p>
                                         <TextField 
                                         sx={{ m: 1 }}
-                                        label='Producto' 
+                                        label='Producto'
                                         name='Producto'
                                         value={body.Producto}
                                         defaultValue={user.Producto}
@@ -90,17 +88,17 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
                                         <p> </p>
                                     <Button variant="outlined" sx={{ m: 1 }} color="success"
                                         onClick={() => {
-                                            try {
-                                                setSendData(!sendData);
-                                                setOpen(false)
-                                                setMensaje({
-                                                    ident: new Date().getTime(),
-                                                    message: "Edito correctamente",
-                                                    type: 'success'
-                                                })
-                                            } catch (err) {
-                                                console.log(err);
-                                            }
+                                                try {
+                                                    setSendData(!sendData);
+                                                    setOpen(false)
+                                                    setMensaje({
+                                                        ident: new Date().getTime(),
+                                                        message: "Edito correctamente",
+                                                        type: 'success'
+                                                    })
+                                                } catch (err) {
+                                                    console.log(err);
+                                                }
                                         }}>
                                         Guardar
                                     </Button>
@@ -118,6 +116,7 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
 }
 
 export default EditarTablaEmbarque2da;
+
 
 
                                     

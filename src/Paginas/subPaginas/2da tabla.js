@@ -12,7 +12,6 @@ import { DataGrid,
     GridToolbarColumnsButton, 
     GridToolbarQuickFilter
 } from '@mui/x-data-grid';
-
 import LinearProgress from '@mui/material/LinearProgress';
 import Fab from '@mui/material/Fab';
 import DocuPDF from "../../docuPDF/DocuPDF";
@@ -20,18 +19,13 @@ import EditarTablaEmbarque2da from "../../Editar/EditarTablaEmbarque2da";
 import EditIcon from '@mui/icons-material/Edit';
 import { grey } from "@mui/material/colors";
 import { BASE_URL } from "../../misc/consts";
-
 import ReactToPrint from 'react-to-print';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import moment from 'moment';
-
-import { styled } from '@mui/material/styles';
-// import XLSX from "xlsx";
 import * as XLSX from 'xlsx';
 
 
 const TableAxios = () => {
-//1 - configuramos Los hooks
 const [products, setProducts] = useState([]);
 const [openEdit, setOpenEdit] = useState(false);
 const [selectedUser, setSelectedUser] = useState([]);
@@ -44,23 +38,18 @@ const [ BuscadorFolio, setBuscadorFolio] = useState("");
 const [ Medidorr, setMedidorr] = useState("");
 const [ BuscadorProducto, setBuscadorProducto] = useState("");
 const [ Producto, setProducto] = useState([]);
+const [ fechaIni, setfechaIni ] = useState(moment().subtract(7, 'days').format('YYYY-MM-DD'));
+const [ fechaFin, setfechaFin ] = useState(moment().format('YYYY-MM-DD'));
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  maxWidth: "auto",
-  color: theme.palette.text.primary,
-}));
 const searcherINI = (e) => {
-  const FechaModi = moment(e.target.value).format('YYYY/MM/DD');
-  setSearch(FechaModi)
-  console.log(FechaModi)
+  setfechaIni(moment(e.target.value).format('YYYY-MM-DD'));
+  setSearch(moment(e.target.value).format('YYYY/MM/DD'));
+  setSearchFIN(moment().format('YYYY/MM/DD'))
+  
 }
 const searcherFIN = (e) => {
-  const FechaModiFIN = moment(e.target.value).format('YYYY/MM/DD');
-  setSearchFIN(FechaModiFIN)
-  console.log(FechaModiFIN)
+  setfechaFin(moment(e.target.value).format('YYYY-MM-DD'));
+  setSearchFIN(moment(e.target.value).format('YYYY/MM/DD'));
 }
 const FilProductos = (e) => {
   setBuscadorProducto(e.target.value)   
@@ -71,6 +60,24 @@ const FilEmpresa = (e) => {
 const FilFolio = (e) => {
   setBuscadorFolio(e.target.value)   
 }
+const Clear = () => {
+  setfechaIni(moment().subtract(7, 'days').format('YYYY-MM-DD'));
+  setSearch(moment().subtract(7, 'days').format('YYYY/MM/DD'));
+  setfechaFin(moment().format('YYYY-MM-DD'));
+  setSearchFIN(moment().format('YYYY/MM/DD'));
+  setBuscadorProducto("");
+  setBuscadorEmpresa("");
+  setBuscadorFolio("");
+
+}
+
+useEffect( ()=>{  
+  const limpiar = async () => {  
+    Clear()
+}
+limpiar()
+}, [])
+
 
 class App extends Component{
     constructor (props) {
@@ -129,7 +136,8 @@ function CustomToolbar() {
         <GridToolbarColumnsButton />
         </Grid>
         <Grid xs="auto">
-        <GridToolbarDensitySelector />
+        <GridToolbarDensitySelector 
+        />
         </Grid>
         <Grid xs="auto">
         <GridToolbarExport 
@@ -160,7 +168,8 @@ useEffect( ()=>{
             const fecha = !search ? data : data.filter((dato)=> dato.FechaTerminoEntrega >= search && dato.FechaTerminoEntrega <= searchFIN);
             const BUSEmpresas = !BuscadorEmpresa ? fecha : fecha.filter((dato)=> dato.Empresa.toLowerCase().includes(BuscadorEmpresa.toLocaleLowerCase()));
             const BUSProducto = !BuscadorProducto ? BUSEmpresas : BUSEmpresas.filter((dato)=> dato.Producto.toLowerCase().includes(BuscadorProducto.toLocaleLowerCase()));
-            const BUsFolio = !BuscadorFolio ? BUSProducto : BUSProducto.filter((dato)=> dato.Folio.includes(BuscadorFolio.toLocaleLowerCase()));
+            const BUsFolio = !BuscadorFolio ? BUSProducto : BUSProducto.filter((dato)=> String(dato.EmbarqueNumero).toLowerCase().includes(String(BuscadorFolio.toLocaleLowerCase())));
+            // const BUsFolio = !BuscadorFolio ? BUSProducto : BUSProducto.filter((dato)=> Number.parseInt(dato.EmbarqueNumero) === Number.parseInt(BuscadorFolio));
             setProducts(BUsFolio)
             const objListQDEEM = {};
             BUsFolio.forEach((Empresa) => {
@@ -207,7 +216,7 @@ useEffect( ()=>{
         })
     }
     getData()
-}, [search,searchFIN,BuscadorFolio,BuscadorEmpresa,BuscadorProducto])
+}, [search,searchFIN,BuscadorEmpresa,BuscadorProducto,BuscadorFolio,openEdit])
 
 
 
@@ -216,15 +225,15 @@ const Embar = products.map((i) => i.Embarque);
     (acc, r) => Number.parseInt(r) + acc, -Embar[0]);
     TotalEmbarque += Number.parseInt(Embar);
 
-const MasaTona = products.map((i) => i.MasaTon);
-  let TotalMasaTona = MasaTona.reduce(
-    (acc, r) => Number.parseInt(r) + acc, -MasaTona[0]);
-    TotalMasaTona += Number.parseInt(MasaTona);
-
-const MasaTon = products.map((i) => i.VolumenM3);
+const MasaTon = products.map((i) => i.MasaTon);
   let TotalMasaTon = MasaTon.reduce(
     (acc, r) => Number.parseInt(r) + acc, -MasaTon[0]);
     TotalMasaTon += Number.parseInt(MasaTon);
+
+const VoluM3 = products.map((i) => i.VolumenM3);
+  let TotalVoluM3 = VoluM3.reduce(
+    (acc, r) => Number.parseInt(r) + acc, -VoluM3[0]);
+    TotalVoluM3 += Number.parseInt(VoluM3);
   
   const columns = [
     {
@@ -246,7 +255,7 @@ const MasaTon = products.map((i) => i.VolumenM3);
     },
     {
       field: 'Empresa',
-      headerName: 'Nombre Entrega',
+      headerName: 'Empresa',
       width: 200,
       editable: true,
     },
@@ -271,25 +280,24 @@ const MasaTon = products.map((i) => i.VolumenM3);
         headerName: 'Acciones',
         type: 'actions',
         width: 150,
-        getActions: () => [
-            <Fab 
-            color="primary" 
-            aria-label="Editar" 
-            size="small"
-            onClick={() => {setOpenEdit(true);setSelectedUser(products);}}
-            ><EditIcon/>
-            </Fab>,
-            <Fab
-            color="primary" 
-            aria-label="Descargar" 
-            size="small">
-            <DocuPDF/>
-            </Fab>,
-        ],
+        getActions: (row) => [
+          <Fab color="primary" 
+          onClick={() => {setOpenEdit(true);setSelectedUser(row.row);}}
+          aria-label="Edit" 
+          size="small"
+          >
+          <EditIcon />
+          </Fab>,
+          <Fab
+          color="primary" 
+          aria-label="Descargar" 
+          size="small">
+          <DocuPDF/>
+          </Fab>,
+      ],
     },
-    
   ];
-
+  
   const resumen = [
     {
       field: 'Empresa',
@@ -325,13 +333,17 @@ const MasaTon = products.map((i) => i.VolumenM3);
   ];
 
   const handleOnExport = () => {
+    
     var wb = XLSX.utils.book_new(),
     ws = XLSX.utils.json_to_sheet(products);
+    for (let i = 0; i <= products.length+1; i++) {
+      delete (ws[`I${i}`])
+      console.log(i)
+    }
     XLSX.utils.book_append_sheet(wb, ws, "Listado de Reportes");
     XLSX.writeFile(wb, "Listado de Reportes.xlsx");
+    console.log([ws])
   }
-  
-
         return (
             <>
             <Grid rowSpacing={4.5} columnSpacing={2.75}>
@@ -341,21 +353,21 @@ const MasaTon = products.map((i) => i.VolumenM3);
                       <Grid item >
                                 <Paper elevation={24}>
                                 <TextField
-                                    id="date Inicio"
+                                    value={fechaIni}
                                     type="date"
                                     label="Fecha Inicio"
                                     sx={{ width: 220 }}
                                     InputLabelProps={{
-                                    shrink: true,
+                                    shrink: true
                                     }}
-                                    onChange={searcherINI}
+                                    onChange={(searcherINI)}
                                 />
                                 </Paper>
                             </Grid>
                             <Grid item >
                                 <Paper elevation={24}>
                                 <TextField
-                                    id="date Termino"
+                                    value={fechaFin}
                                     type="date"
                                     label="Fecha Termino"
                                     sx={{ width: 220 }}
@@ -371,7 +383,8 @@ const MasaTon = products.map((i) => i.VolumenM3);
                             <Paper elevation={24}>
                               <TextField
                                     value={BuscadorFolio}
-                                    label="Buscador Embarque"
+                                    type="text"
+                                    label="Buscador Embarque" 
                                     placeholder="Buscador Embarque"
                                     sx={{ width: 220 }}
                                     InputLabelProps={{
@@ -414,6 +427,7 @@ const MasaTon = products.map((i) => i.VolumenM3);
                             <Grid item >
                                 <Paper elevation={24}>
                                   <Button
+                                  onClick={Clear}
                                   >
                                     Limpiar Filtro
                                   </Button>
@@ -425,13 +439,10 @@ const MasaTon = products.map((i) => i.VolumenM3);
                     <Grid xs={2}></Grid>
                 </Grid>
             </Grid>
-            <div ref={componentRef} style={{width: "100%"}}> 
             <Grid  item xs={12}>
                 <Grid container>
                     <Grid item lg={12} md={8} sm={8} xs={12} sx={{ mt: 5 }}>
-                        <Paper elevation={24}>
-                        <StyledPaper
-                          >
+                        <Paper ref={componentRef} style={{width: "100%"}} elevation={24}>
                             <Typography align="center" variant="h3">Resumen de Búsqueda</Typography>
                             <Grid container item >
                             <Grid xs={10.5}>
@@ -456,27 +467,27 @@ const MasaTon = products.map((i) => i.VolumenM3);
                               </Grid>
                               </Grid>
                             <p/>
-                            <Box sx={{ height: 635, width: '100%' }}>
+                            <Box  sx={{ height: 635, width: '100%' }}> 
                             <DataGrid
                                     //Traspasarlo a español sus componentes DataGrid
                                     localeText={esES.components.MuiDataGrid.defaultProps.localeText}
                                     rows={products}
                                     pinnedRows={products.pinnedRows}
                                     columns={resumen}
-                                    filterModel={filterModel}
                                     disableSelectionOnClick
                                     experimentalFeatures={{ newEditingApi: true }}
                                     components={{
                                         LoadingOverlay: LinearProgress,
                                         }}
+                                    
                                 />
                             <Box sx={{ mt: -8, height: 55, width: '100%' }}>
-                            <TableCell sx={{height: 70, width: 110 }} variant="button" display="block" align="left">Empresa</TableCell>
-                            <TableCell sx={{height: 70, width: 120 }} align="left">Medidor</TableCell>
-                            <TableCell sx={{height: 70, width: 120 }} align="left">Producto</TableCell>
-                            <TableCell sx={{height: 70, width: 40 }} align="left">Embarque</TableCell>
-                            <TableCell sx={{height: 70, width: 80 }} align="left">Suma Masa</TableCell>
-                            <TableCell sx={{height: 70, width: 100 }} align="left">Suma Volumen</TableCell>
+                            <TableCell sx={{height: 70, width: 110,fontWeight: 'bold'  }} align="left">Empresa</TableCell>
+                            <TableCell sx={{height: 70, width: 120,fontWeight: 'bold'  }} align="left">Medidor</TableCell>
+                            <TableCell sx={{height: 70, width: 120,fontWeight: 'bold'  }} align="left">Producto</TableCell>
+                            <TableCell sx={{height: 70, width: 40,fontWeight: 'bold'  }} align="left">Embarque</TableCell>
+                            <TableCell sx={{height: 70, width: 80,fontWeight: 'bold'}} align="left">Masa Total</TableCell>
+                            <TableCell sx={{height: 70, width: 100,fontWeight: 'bold' }} align="left">Volumen Total</TableCell>
                             </Box>
                             <Box sx={{ mt:-4, height: 44, width: '100%' }}>
                             <TableCell sx={{height: 70, width: 110 }} align="left">{Empresa.length}</TableCell>
@@ -484,15 +495,13 @@ const MasaTon = products.map((i) => i.VolumenM3);
                             <TableCell sx={{height: 70, width: 120 }} align="left">{Producto.length}</TableCell>
                             <TableCell sx={{height: 70, width: 65 }} align="left">{TotalEmbarque}</TableCell>
                             <TableCell sx={{height: 70, width: 80 }} align="left">{TotalMasaTon}</TableCell>
-                            <TableCell sx={{height: 70, width: 100 }} align="left">{TotalMasaTon}</TableCell>
+                            <TableCell sx={{height: 70, width: 100 }} align="left">{TotalVoluM3}</TableCell>
                             </Box>
                             </Box>
-                            </StyledPaper>
                         </Paper>
                     </Grid>
                 </Grid>
             </Grid>
-            </div>
         <Grid xs={12} columnSpacing={2.75} >
 
             <Grid item xs={0.1}></Grid>
@@ -513,6 +522,7 @@ const MasaTon = products.map((i) => i.VolumenM3);
                                     disableSelectionOnClick
                                     rowsPerPageOptions={[5,10,20,50,100]}
                                     experimentalFeatures={{ newEditingApi: true }}
+                                    onClick={() => {setOpenEdit(true);setSelectedUser(products);}}
                                     components={{
                                         LoadingOverlay: LinearProgress,
                                         Toolbar: CustomToolbar}}
@@ -553,19 +563,18 @@ const MasaTon = products.map((i) => i.VolumenM3);
               </Grid>
           </Grid>
 
-          
-          {/* <Button variant="text" size="large"  startIcon={
-          <ReactToPrint
-                content={() => componentRef.current}
-                severity="success"
-            />}> Proximamente</Button> */}
-
             <EditarTablaEmbarque2da 
                   className="bi bi-pencil-fill"
                   open={openEdit}
                   setOpen={setOpenEdit}
                   user={selectedUser}
                   />
+            <h1> Test</h1>
+            <input type="file" onChange={<handleFileChange/>}></input>
+            <br/>
+            <p>{<fileName/>}</p>
+            <p>{<fileContent/>}</p>
+
             </>
         )
 }

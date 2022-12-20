@@ -54,6 +54,7 @@ const TablaTransferView = () => {
   useEffect( () => { getUsers() }, [getUsers()]);
 
     return(
+      <>
 
     <TableContainer component={Paper} elevation={2}>
         <Alertas message={mensaje} />
@@ -98,6 +99,8 @@ const TablaTransferView = () => {
                   user={selectedUser}
                   />
       </TableContainer>
+            
+      </>
   );
 }
 

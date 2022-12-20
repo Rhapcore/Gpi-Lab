@@ -28,7 +28,7 @@ const Tomm3 = ({cateTon, TonAcum, VolumenAcum, result}) => {
                 name: 'Suma de VOLUM ACUM',
                 data: VolumenAcum,
                 }]) }, 
-        [result]);
+        [result,TonAcum,VolumenAcum]);
 
         const columnChartOptions = {
             chart: {
@@ -136,7 +136,7 @@ const Tomm3 = ({cateTon, TonAcum, VolumenAcum, result}) => {
                 }
             }
         }));
-    }, [primary, secondary, line, warning, primaryMain, successDark, result]);
+    }, [primary, secondary, line, warning, primaryMain, successDark, result,cateTon]);
 
     return (
         <div id="chart">

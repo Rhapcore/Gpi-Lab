@@ -113,6 +113,18 @@ const SideNavCliente = () => {
       primary="Panel de búsqueda" 
       icon={<LeaderboardIcon />}/>
 
+    <ListItemLink 
+      as={Link} 
+      to="/CDashboard" 
+      primary="Indicadores" 
+      icon={<LeaderboardIcon />}/>
+
+    <ListItemLink 
+      as={Link} 
+      to="/CAcuerdoComercial" 
+      primary="Acuerdo Comercial" 
+      icon={<LeaderboardIcon />}/>
+
     <ListItemLink
       onClick={() => {
       localStorage.removeItem('user');

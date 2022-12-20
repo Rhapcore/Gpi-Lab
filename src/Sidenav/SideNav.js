@@ -71,7 +71,7 @@ const SideNav = () => {
           },
         })}
       >
-        <Paper elevation={0} sx={{ maxWidth: 256 }}>
+        <Paper elevation={0} sx={{ maxWidth: 230 }}>
           <FireNav component="nav" disablePadding>
               <Image duration={1000} height="80%" width="100%" src={LogoGpi}/>
             <Divider />
@@ -85,28 +85,26 @@ const SideNav = () => {
     }
   >
     
-    <ListItemButton>
+    <ListSubheader>
       <Grid
         container
         spacing={-1}
         direction="column"
         style={{ minHeight: '15vh'}}>
         <Grid item xs={12} style={{ minHeight: '15vh' }}>
-          <Typography align="center" variant="h5">Lipigas </Typography>
-          <Typography align="center" variant="h5">Concon </Typography>
-          <p/>
-          <Divider/><Divider/>
           <p/>
           <Image duration={1000} height="100%" width="100%"  src={LogoLipigas}/>
           <p/>
+          <Typography align="center" sx={{fontWeight: 'bold' }} > Ubicacion Concon </Typography>
+          <Divider/><Divider/>
           <Divider/><Divider/>
           <p/>
-          <Typography align="center" variant="h5">{user.Rut}</Typography>
-          <Typography align="center" variant="h5">{user.Nombre}</Typography>
-          <Typography align="center" variant="h5">{user.Cargo}</Typography>
+          <Typography align="center" >{user.Rut}</Typography>
+          <Typography align="center" sx={{fontWeight: 'bold' }}>{user.Nombre}</Typography>
+          <Typography align="center" >{user.Cargo}</Typography>
         </Grid>
       </Grid>
-    </ListItemButton>
+    </ListSubheader>
 
     <Divider />
 
