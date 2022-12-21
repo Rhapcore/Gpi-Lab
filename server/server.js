@@ -180,6 +180,27 @@ app.get("/TablaHistorial", (req,res) => {
     })
 })
 
+app.get("/MostrarEmpresas", (req,res) => {
+    db.all("SELECT * FROM EmpresasNombres", (err, rows) => {
+        if (err) {
+            res.status(500).send(err)}
+            else {
+                res.status(200).send(rows)
+            }
+    })
+})
+
+app.post('/GuardarEmpresa', (req, res) => {
+	const {EmpresasNom} = req.body;
+	db.all(`INSERT INTO EmpresasNombres (EmpresasNom) VALUES ('${EmpresasNom}')`,(err, result) => {
+	  if (err) {
+		res.status(500).send("Error al guardar la Empresa");
+	  } else {
+		res.status(200).send({ status: 'success', message: 'Empresa Creada' });
+  		}
+  });
+});
+
 app.listen(3001 , () => console.log("Listening at port 3001"))
 
 //  cmd gpi-lab/server/ npx nodemon server.js

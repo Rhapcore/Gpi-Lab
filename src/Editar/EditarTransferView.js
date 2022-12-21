@@ -43,7 +43,6 @@ const TransferViewEditar = ({user ,open, setOpen }) => {
                 const sentBody = { ...user, ...body};
                     sentBody.Id = user.Id;
                     
-
               const {data} = await axios.post(`${BASE_URL}/TransferViewEditar`, sentBody);
             handleClose()
             getUsers()

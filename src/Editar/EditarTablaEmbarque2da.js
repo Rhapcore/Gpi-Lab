@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { TextField, Button } from "@mui/material/";
+import { TextField, Button, MenuItem } from "@mui/material/";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
@@ -18,9 +18,45 @@ const style = {
     boxShadow: 24,
     p: 4,
 }
+/*
+// Tiene que ser remplzadado por el SCV
+const Empresa = [
+    {value: 'CLIENTE1',label: 'CLIENTE1'},
+    {value: 'CLIENTE2',label: 'CLIENTE2'},
+    {value: 'CLIENTE3',label: 'CLIENTE3'},
+    {value: 'CLIENTE4',label: 'CLIENTE4'},
+    {value: 'CLIENTE5',label: 'CLIENTE5'},
+];
+*/
+// Tiene que ser remplzadado por el ESP32
+const Producto = [
+    {value: 'PRODUCTO1',label: 'PRODUCTO1'},
+    {value: 'PRODUCTO2',label: 'PRODUCTO2'},
+    {value: 'PRODUCTO3',label: 'PRODUCTO3'},
+    {value: 'PRODUCTO4',label: 'PRODUCTO4'},
+    {value: 'PRODUCTO5',label: 'PRODUCTO5'},
+    {value: 'PRODUCTO6',label: 'PRODUCTO6'},
+    {value: 'PRODUCTO7',label: 'PRODUCTO7'},
+    {value: 'PRODUCTO8',label: 'PRODUCTO8'},
+    {value: 'PRODUCTO9',label: 'PRODUCTO9'},
+    {value: 'PRODUCTO10',label: 'PRODUCTO10'},
 
+];
+
+    
 
 const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
+
+    const [Empresa, setEmpresa] = useState([])
+
+    useEffect( () => { 
+        const getUsers = async () => {
+        const {data} = await axios.get(`${BASE_URL}/MostrarEmpresas`)
+        setEmpresa(data)
+        }
+        getUsers(Empresa);
+      }, []);
+    const NomEmpresas = (Empresa.map((i) => i.EmpresasNom))
     const handleClose = () => setOpen(false);
     const [body, setBody] = useState({});
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
@@ -69,22 +105,41 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
                     <i>ㅤㅤ</i>
                                 <div>
                                 <TextField 
-                                        sx={{ m: 1 }}
-                                        label='Empresa' 
-                                        name='Empresa' 
-                                        value={body.Empresa}
-                                        defaultValue={user.Empresa}
-                                        onChange={onChange}
-                                        />
+                                    sx={{ m: 1 }} 
+                                    label="Empresa" 
+                                    name='Empresa'
+                                    value={body.Empresa}
+                                    onChange={onChange}
+                                    defaultValue={user.Empresa}
+                                    select
+                                    >
+                                    {NomEmpresas.map((option) => (
+                                    <MenuItem 
+                                    key={option} 
+                                    value={option}>
+                                    {option}
+                                    </MenuItem>
+                                    ))}
+                                    </TextField>
                                         <p> </p>
                                         <TextField 
-                                        sx={{ m: 1 }}
-                                        label='Producto'
-                                        name='Producto'
-                                        value={body.Producto}
-                                        defaultValue={user.Producto}
-                                        onChange={onChange}
-                                        />
+                                    sx={{ m: 1 }} 
+                                    label="Producto" 
+                                    name='Producto'
+                                    value={body.Producto}
+                                    onChange={onChange}
+                                    defaultValue={user.Producto}
+                                    select
+                                    >
+                                    {Producto.map((option) => (
+                                    <MenuItem 
+                                    key={option.value} 
+                                    value={option.value}
+                                     defaultValue={user.Producto}>
+                                    {option.label}
+                                    </MenuItem>
+                                    ))}
+                                    </TextField>
                                         <p> </p>
                                     <Button variant="outlined" sx={{ m: 1 }} color="success"
                                         onClick={() => {

@@ -1,5 +1,5 @@
 // material mui
-import {Grid,Typography, Paper, createTheme} from '@mui/material';
+import {Grid,Typography, Paper} from '@mui/material';
 import AcuerdoComercial from '../../Tablas/AcuerdoComercial';
 import { grey, lime } from '@mui/material/colors';
 // tablas
@@ -17,11 +17,12 @@ const AcuerdoComercial2 = () => {
     useEffect( () => { 
         const getUsers = async () => {
         const {data} = await axios.get(`${BASE_URL}/MostrarAcuerdoComercial`)
+        console.log("data",data)
           setUserList(data)
         }
-        getUsers();
-      }, [userList]);
-
+        getUsers(userList);
+      }, []);
+    console.log("userList afuera",userList)
     const TMP = Number.parseInt(userList.map((i) => i.TMProgramaPorAcuerdos));
     const TMR = Number.parseInt(userList.map((i) => i.TMRecepcionada));
     const TMT = TMP - TMR;

@@ -48,9 +48,7 @@ const DocuPDF = () => {
                             <tr className="column2">
                                 <tr>ㅤㅤㅤ</tr>
                                 <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
-                                <h1> Ejemplo </h1>
                                 <Image duration={1000} height="80%" width="100%" src={InformeEjemplo}/>
-                                <h1> Ejemplo </h1>
                                 <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
                                 <tr>ㅤㅤㅤ</tr>
                                 <tr></tr>
