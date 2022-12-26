@@ -5,6 +5,7 @@ import {Grid,Typography} from '@mui/material';
 import SideNav from '../Sidenav/SideNav';
 import ConfiguracionTransverView from './subPaginas/Configuracion TransferView';
 import IngresarEmpresa from './subPaginas/IngresarEmpresa';
+import IngresarImagen from './subPaginas/IngresarImagen';
 
 const UsuarioFront = () => {
     return(
@@ -15,7 +16,7 @@ const UsuarioFront = () => {
                 <Grid item xs={0.2}> </Grid>
                         <SideNav/>
                 <Grid item xs={10}>
-                <IngresarEmpresa/>
+                <IngresarEmpresa/>            
                 <ConfiguracionTransverView/>
             </Grid>
             </Grid>
