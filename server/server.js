@@ -190,6 +190,7 @@ app.get("/MostrarEmpresas", (req,res) => {
     })
 })
 
+
 app.post('/GuardarEmpresa', (req, res) => {
 	const {EmpresasNom} = req.body;
 	db.all(`INSERT INTO EmpresasNombres (EmpresasNom) VALUES ('${EmpresasNom}')`,(err, result) => {
@@ -200,6 +201,27 @@ app.post('/GuardarEmpresa', (req, res) => {
   		}
   });
 });
+
+app.get("/MostrarProducto", (req,res) => {
+    db.all("SELECT * FROM ProductoOmni", (err, rows) => {
+        if (err) {
+            res.status(500).send(err)}
+            else {
+                res.status(200).send(rows)
+            }
+    })
+})
+
+app.post('/EditarEmpresa', (req, res) => {
+	const { Id,EmpresasNom, } = req.body
+	db.all(`UPDATE EmpresasNombres SET EmpresasNom = '${EmpresasNom}' WHERE Id = '${Id}'`,  (err, result) => {
+		if (err) {
+			res.status(500).send(err)
+		} else {
+			res.status(200).send({ "status": "success", "message": "Acuerdo Comercial editado" })
+		}
+	})
+})
 
 app.listen(3001 , () => console.log("Listening at port 3001"))
 

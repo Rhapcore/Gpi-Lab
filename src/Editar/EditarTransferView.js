@@ -33,17 +33,13 @@ const TransferViewEditar = ({user ,open, setOpen }) => {
         })
     }
 
-    const getUsers = async () => {
-        const {data} = await axios.get(`${BASE_URL}/TransferView`)
-      }
-
     useEffect(() => {
         const onEdit = async () => {
             try {
                 const sentBody = { ...user, ...body};
                     sentBody.Id = user.Id;
                     
-              const {data} = await axios.post(`${BASE_URL}/TransferViewEditar`, sentBody);
+              const {data} = await axios.post(`${BASE_URL}/EditarEmpresa`, sentBody);
             handleClose()
             getUsers()
             } catch (response) {

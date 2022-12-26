@@ -44,7 +44,7 @@ const TMP = userList.map((i) => i.TMProgramaPorAcuerdos);
 const TMR = userList.map((i) => i.TMRecepcionada);
 
 let totaltotal = TMP.reduce(
-  (acc, r) => Number.parseInt(r) + acc, -TMP[0]);
+  (acc, r) => Number.parseFloat(r) + acc, -TMP[0]);
   totaltotal = Number(TMR / TMP).toFixed(2);
 
     return(

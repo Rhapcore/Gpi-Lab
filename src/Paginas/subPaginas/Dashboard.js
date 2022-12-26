@@ -185,14 +185,17 @@ const searcherINI = (e) => {
     const m3TablaCli = userList.map((i) => i.MasaTon); 
   
     let TotalEmbarque = EmbarTablaCli.reduce(
-        (acc, r) => Number.parseInt(r) + acc, -EmbarTablaCli[0]);
-        TotalEmbarque += Number.parseInt(EmbarTablaCli);  
+        (acc, r) => Number.parseFloat(r) + acc, -EmbarTablaCli[0]);
+        TotalEmbarque += Number.parseFloat(EmbarTablaCli);  
+        TotalEmbarque = TotalEmbarque.toFixed(2);
     let TotalTonneladas = tonTablaCli.reduce(
-        (acc, r) => Number.parseInt(r) + acc, -tonTablaCli[0]);
-        TotalTonneladas += Number.parseInt(tonTablaCli);
+        (acc, r) => Number.parseFloat(r) + acc, -tonTablaCli[0]);
+        TotalTonneladas += Number.parseFloat(tonTablaCli);
+        TotalTonneladas = TotalTonneladas.toFixed(2);
     let TotalVolumen = m3TablaCli.reduce(
-        (acc, r) => Number.parseInt(r) + acc, -m3TablaCli[0]);
-        TotalVolumen += Number.parseInt(m3TablaCli);
+        (acc, r) => Number.parseFloat(r) + acc, -m3TablaCli[0]);
+        TotalVolumen += Number.parseFloat(m3TablaCli);
+        TotalVolumen = TotalVolumen.toFixed(2);
         
     //################# Configuracion de QDeEmbarquesmes #################
 
@@ -200,15 +203,17 @@ const searcherINI = (e) => {
     const m3m3 = userList.map((i) => i.MasaTon);
 
     let M3M3 = m3m3.reduce(
-        (acx, r) => Number.parseInt(r) + acx, -m3m3[0]);
-        M3M3 += Number.parseInt(m3m3);
+        (acx, r) => Number.parseFloat(r) + acx, -m3m3[0]);
+        M3M3 += Number.parseFloat(m3m3);
         M3M3 /= 10
+        M3M3 = M3M3.toFixed(2)
       
     
     let totaltotal = TonTon.reduce(
-        (acc, r) => Number.parseInt(r) + acc, -TonTon[0]);
-        totaltotal += Number.parseInt(TonTon);
+        (acc, r) => Number.parseFloat(r) + acc, -TonTon[0]);
+        totaltotal += Number.parseFloat(TonTon);
         totaltotal /= 10
+        totaltotal = totaltotal.toFixed(2)
 
     //################# Configuracion de Tipo de Producto #################
 

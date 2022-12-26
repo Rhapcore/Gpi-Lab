@@ -66,8 +66,8 @@ const TablaClienprod = ({result, TotalEmbarque, TotalTonneladas, TotalVolumen}) 
                   {user.Producto}
                 </StyledTableCell>
                 <StyledTableCell aria-label="customized table">{user.Embarque}</StyledTableCell>
-                <StyledTableCell aria-label="customized table">{user.VolumenM3} </StyledTableCell>
-                <StyledTableCell aria-label="customized table">{user.MasaTon}</StyledTableCell>
+                <StyledTableCell aria-label="customized table">{user.VolumenM3.toFixed(2)} </StyledTableCell>
+                <StyledTableCell aria-label="customized table">{user.MasaTon.toFixed(2)}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

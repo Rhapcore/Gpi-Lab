@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect, Component } from "react";
+import {useRef, useState, useEffect} from "react";
 import axios from "axios";
 import {Grid,Paper,Button,TextField, Typography, TableCell} from '@mui/material';
 import * as React from 'react';
@@ -8,7 +8,6 @@ import { DataGrid,
     esES,
     GridToolbarContainer, 
     GridToolbarExport,
-    GridToolbarDensitySelector,
     GridToolbarColumnsButton, 
     GridToolbarQuickFilter
 } from '@mui/x-data-grid';
@@ -76,30 +75,6 @@ useEffect( ()=>{
 }
 limpiar()
 }, [])
-
-
-class App extends Component{
-    constructor (props) {
-        super (props);
-        this.state = {
-            fileName: "",
-            fileContent: ""
-        };
-    }
-
-handleFileChange = e => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = () => {
-        this.setState ({fileName: file.Name, fileContent: reader.result})
-        console.log(reader)
-    }
-    reader.onerror = () => {
-        console.log("No Coresponde", reader.error)
-    }
-}
-}
 
 const [filterModel, setFilterModel] = React.useState({
     items: [
@@ -198,7 +173,7 @@ useEffect( ()=>{
             const BUSEmpresas = !BuscadorEmpresa ? fecha : fecha.filter((dato)=> dato.Empresa.toLowerCase().includes(BuscadorEmpresa.toLocaleLowerCase()));
             const BUSProducto = !BuscadorProducto ? BUSEmpresas : BUSEmpresas.filter((dato)=> dato.Producto.toLowerCase().includes(BuscadorProducto.toLocaleLowerCase()));
             const BUsFolio = !BuscadorFolio ? BUSProducto : BUSProducto.filter((dato)=> String(dato.Medidor).toLowerCase().includes(String(BuscadorFolio.toLocaleLowerCase())));
-            // const BUsFolio = !BuscadorFolio ? BUSProducto : BUSProducto.filter((dato)=> Number.parseInt(dato.EmbarqueNumero) === Number.parseInt(BuscadorFolio));
+            // const BUsFolio = !BuscadorFolio ? BUSProducto : BUSProducto.filter((dato)=> Number.parseFloat(dato.EmbarqueNumero) === Number.parseFloat(BuscadorFolio));
             setProducts(BUsFolio)
             const objListQDEEM = {};
             BUsFolio.forEach((Empresa) => {
@@ -251,18 +226,19 @@ useEffect( ()=>{
 
 const Embar = products.map((i) => i.Embarque);
   let TotalEmbarque = Embar.reduce(
-    (acc, r) => Number.parseInt(r) + acc, -Embar[0]);
-    TotalEmbarque += Number.parseInt(Embar);
+    (acc, r) => Number.parseFloat(r) + acc, -Embar[0]);
+    TotalEmbarque += Number.parseFloat(Embar);
 
 const MasaTon = products.map((i) => i.MasaTon);
   let TotalMasaTon = MasaTon.reduce(
-    (acc, r) => Number.parseInt(r) + acc, -MasaTon[0]);
-    TotalMasaTon += Number.parseInt(MasaTon);
+    (acc, r) => Number.parseFloat(r) + acc, -MasaTon[0]);
+    TotalMasaTon += Number.parseFloat(MasaTon);
 
 const VoluM3 = products.map((i) => i.VolumenM3);
   let TotalVoluM3 = VoluM3.reduce(
-    (acc, r) => Number.parseInt(r) + acc, -VoluM3[0]);
-    TotalVoluM3 += Number.parseInt(VoluM3);
+    (acc, r) => Number.parseFloat(r) + acc, -VoluM3[0]);
+    TotalVoluM3 += Number.parseFloat(VoluM3);
+    TotalVoluM3 = TotalVoluM3.toFixed(2);
   
   const columns = [
     {
@@ -321,13 +297,21 @@ const VoluM3 = products.map((i) => i.VolumenM3);
           color="primary" 
           aria-label="Descargar" 
           size="small">
-          <DocuPDF/>
+          <DocuPDF
+          user={selectedUser}
+          />
           </Fab>,
       ],
     },
   ];
   
   const resumen = [
+    {
+      field: 'FechaTerminoEntrega',
+      headerName: 'Fecha termino entrega',
+      type: 'date',
+      width: 200,
+    },
     {
       field: 'Medidor',
       headerName: 'Medidor',
@@ -355,10 +339,10 @@ const VoluM3 = products.map((i) => i.VolumenM3);
       width: 120,
     },
     {
-        field: 'Embarque',
-        headerName: 'Embarque',
-        width: 120,
-      },
+      field: 'Embarque',
+      headerName: 'Cantidad de Embarque',
+      width: 170,
+    },
   ];
 
   const handleOnExportResumen = () => {
@@ -366,7 +350,6 @@ const VoluM3 = products.map((i) => i.VolumenM3);
     var wb = XLSX.utils.book_new(),
     ws = XLSX.utils.json_to_sheet(products);
     for (let i = 0; i <= products.length+1; i++) {
-      delete (ws[`B${i}`])
       delete (ws[`C${i}`])
     }
     XLSX.utils.book_append_sheet(wb, ws, "Resumen de Búsqueda");
@@ -496,15 +479,18 @@ const VoluM3 = products.map((i) => i.VolumenM3);
                                     
                                 />
                                 </Box>
+                                <Typography align="center" variant="h5">Total Resumen de Búsqueda</Typography>
                                 <Box sx={{ height: 55, width: '100%' }}>
-                                <TableCell sx={{height: 70, width: 110,fontWeight: 'bold'  }} align="left">Medidor</TableCell>
-                                <TableCell sx={{height: 70, width: 110,fontWeight: 'bold'  }} align="left">Empresa</TableCell>
-                                <TableCell sx={{height: 70, width: 120,fontWeight: 'bold'  }} align="left">Producto</TableCell>
+                                <TableCell sx={{height: 70, width: 170,fontWeight: 'bold'  }} align="left"> Inicioㅤ ㅤ {fechaIni}</TableCell>
+                                <TableCell sx={{height: 70, width: 110,fontWeight: 'bold'  }} align="left">Medidor Total</TableCell>
+                                <TableCell sx={{height: 70, width: 110,fontWeight: 'bold'  }} align="left">Empresa Total</TableCell>
+                                <TableCell sx={{height: 70, width: 120,fontWeight: 'bold'  }} align="left">Producto Total</TableCell>
                                 <TableCell sx={{height: 70, width: 80,fontWeight: 'bold'}} align="left">Masa Total</TableCell>
                                 <TableCell sx={{height: 70, width: 100,fontWeight: 'bold' }} align="left">Volumen Total</TableCell>
-                                <TableCell sx={{height: 70, width: 200,fontWeight: 'bold'  }} align="left">Cantidad de Embarque</TableCell>
+                                <TableCell sx={{height: 70, width: 200,fontWeight: 'bold'  }} align="left">Embarque Total</TableCell>
                                 </Box>
                                 <Box sx={{ mt:-4, height: 44, width: '100%' }}>
+                                <TableCell sx={{height: 70, width: 170,fontWeight: 'bold'  }} align="left">Termino ㅤ{fechaFin}</TableCell>
                                 <TableCell sx={{height: 70, width: 110 }} align="left">{Medidorr.length}</TableCell>
                                 <TableCell sx={{height: 70, width: 110 }} align="left">{Empresa.length}</TableCell>
                                 <TableCell sx={{height: 70, width: 120 }} align="left">{Producto.length}</TableCell>
@@ -572,12 +558,6 @@ const VoluM3 = products.map((i) => i.VolumenM3);
       setOpen={setOpenEdit}
       user={selectedUser}
       />
-            <h1> Test</h1>
-            <input type="file" onChange={<handleFileChange/>}></input>
-            <br/>
-            <p>{<fileName/>}</p>
-            <p>{<fileContent/>}</p>
-
     </>
   )
 }

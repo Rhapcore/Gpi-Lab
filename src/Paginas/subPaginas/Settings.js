@@ -9,7 +9,6 @@ import TransferViewEditar from '../../Tablas/TablaTransferView';
 const Settings = () => {
     return(
         <div><Grid>
-        <Typography variant="h5">  </Typography>
           <Grid container rowSpacing={1} columnSpacing={{ xs: "auto", sm: "auto", md: "auto" }}>
           <Grid item xs={10} sx={{ mt: 5 }}>
           <Paper xs={10} elevation={10}>
@@ -22,9 +21,6 @@ const Settings = () => {
                       Configuracion de TransferView
                       </Typography>
                   </Grid>
-                  <Grid item xs={8}></Grid>
-                  </Grid>
-                  <i>ㅤ</i>
                   <TransferViewEditar />
                   </MainCard>
                   </Paper> 

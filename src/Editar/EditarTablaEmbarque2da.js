@@ -29,34 +29,30 @@ const Empresa = [
 ];
 */
 // Tiene que ser remplzadado por el ESP32
-const Producto = [
-    {value: 'PRODUCTO1',label: 'PRODUCTO1'},
-    {value: 'PRODUCTO2',label: 'PRODUCTO2'},
-    {value: 'PRODUCTO3',label: 'PRODUCTO3'},
-    {value: 'PRODUCTO4',label: 'PRODUCTO4'},
-    {value: 'PRODUCTO5',label: 'PRODUCTO5'},
-    {value: 'PRODUCTO6',label: 'PRODUCTO6'},
-    {value: 'PRODUCTO7',label: 'PRODUCTO7'},
-    {value: 'PRODUCTO8',label: 'PRODUCTO8'},
-    {value: 'PRODUCTO9',label: 'PRODUCTO9'},
-    {value: 'PRODUCTO10',label: 'PRODUCTO10'},
 
-];
 
     
 
 const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
 
     const [Empresa, setEmpresa] = useState([])
+    const [Producto, setProducto] = useState([])
 
     useEffect( () => { 
-        const getUsers = async () => {
+        const getEmpresa = async () => {
         const {data} = await axios.get(`${BASE_URL}/MostrarEmpresas`)
         setEmpresa(data)
         }
-        getUsers(Empresa);
+        getEmpresa(Empresa) ;
+        const getProducto = async () => {
+            const {data} = await axios.get(`${BASE_URL}/MostrarProducto`)
+            setProducto(data)
+            }
+            getProducto(Empresa) ;
       }, []);
+
     const NomEmpresas = (Empresa.map((i) => i.EmpresasNom))
+    const NomProducto = (Producto.map((i) => i.ProductoOmni))
     const handleClose = () => setOpen(false);
     const [body, setBody] = useState({});
     const [mensaje, setMensaje] = useState({ ident: null, message: null, type: null })
@@ -74,7 +70,7 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
             try {
                 const sentBody = { ...user, ...body};
                 sentBody.id = user.id;
-              const {data} = await axios.post(`${BASE_URL}/EditarCliente`, sentBody);
+                const {data} = await axios.post(`${BASE_URL}/EditarCliente`, sentBody);
               
             handleClose()
             } catch (response) {
@@ -131,12 +127,11 @@ const EditarTablaEmbarque2da = ({user ,open, setOpen }) => {
                                     defaultValue={user.Producto}
                                     select
                                     >
-                                    {Producto.map((option) => (
+                                    {NomProducto.map((option) => (
                                     <MenuItem 
-                                    key={option.value} 
-                                    value={option.value}
-                                     defaultValue={user.Producto}>
-                                    {option.label}
+                                    key={option} 
+                                    value={option}>
+                                    {option}
                                     </MenuItem>
                                     ))}
                                     </TextField>

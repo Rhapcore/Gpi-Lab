@@ -48,8 +48,8 @@ const onSubmit = async () => {
     if (validateRUT(body.Rut) === true) {
             try {
             const {data} = await axios.post(`${BASE_URL}/Guardar`, body)
-            const user = JSON.parse(localStorage.getItem('user'));
-            const {guardar} = await axios.post(`${BASE_URL}/GuardarHistorial`, body)
+            // const user = JSON.parse(localStorage.getItem('user'));
+            // const {guardar} = await axios.post(`${BASE_URL}/GuardarHistorial`, body)
             setMensaje({
                 ident: new Date().getTime(),
                         message: data.message,

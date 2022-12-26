@@ -7,7 +7,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import InformeEjemplo from '../Imagenes/InformeEjemplo.png';
 import Image from "mui-image";
 
-const DocuPDF = () => {
+const DocuPDF = ({user}) => {
 
     const componentRef = useRef();
 /*
@@ -46,12 +46,10 @@ const DocuPDF = () => {
                         <table className="testClass">
                         <thead>
                             <tr className="column2">
-                                <tr>ㅤㅤㅤ</tr>
-                                <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
                                 <Image duration={1000} height="80%" width="100%" src={InformeEjemplo}/>
-                                <i>ㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤㅤ</i>
-                                <tr>ㅤㅤㅤ</tr>
-                                <tr></tr>
+                                <tr>ㅤActualidad o Cambio Realizado</tr>
+                                <tr>ㅤ{user.Empresa}</tr>
+                                <tr>ㅤ{user.Producto}</tr>
                             </tr>
                         </thead>
                         </table>

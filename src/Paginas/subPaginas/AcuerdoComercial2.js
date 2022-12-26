@@ -23,8 +23,8 @@ const AcuerdoComercial2 = () => {
         getUsers(userList);
       }, []);
     console.log("userList afuera",userList)
-    const TMP = Number.parseInt(userList.map((i) => i.TMProgramaPorAcuerdos));
-    const TMR = Number.parseInt(userList.map((i) => i.TMRecepcionada));
+    const TMP = Number.parseFloat(userList.map((i) => i.TMProgramaPorAcuerdos));
+    const TMR = Number.parseFloat(userList.map((i) => i.TMRecepcionada));
     const TMT = TMP - TMR;
 
     

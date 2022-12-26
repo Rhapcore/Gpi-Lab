@@ -47,8 +47,8 @@ const TablaProducemb = ({result}) => {
                   {user.Empresa}
                 </StyledTableCell>
                 <StyledTableCell>{user.Producto}</StyledTableCell>
-                <StyledTableCell>{user.MasaTon}</StyledTableCell>
-                <StyledTableCell>{user.VolumenM3}</StyledTableCell>
+                <StyledTableCell>{user.MasaTon.toFixed(2)}</StyledTableCell>
+                <StyledTableCell>{user.VolumenM3.toFixed(2)}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
